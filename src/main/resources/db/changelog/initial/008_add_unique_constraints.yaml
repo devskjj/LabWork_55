@@ -1,0 +1,14 @@
+databaseChangeLog:
+  - changeSet:
+      id: 008-add-unique-constraints
+      author: admin
+      changes:
+        - addUniqueConstraint:
+            tableName: users
+            columnNames: email
+            constraintName: unique_user_email
+
+        - addUniqueConstraint:
+            tableName: top_scores
+            columnNames: result_id
+            constraintName: uq_top_scores_result
