@@ -28,3 +28,14 @@ databaseChangeLog:
                   type: VARCHAR(150)
                   constraints:
                     nullable: false
+              - column:
+                  name: enabled
+                  type: BOOLEAN
+                  defaultValueBoolean: true
+                  constraints:
+                    nullable: false
+              - column:
+                  name: role_id
+                  type: INT
+                  constraints:
+                    nullable: false

@@ -1,0 +1,18 @@
+databaseChangeLog:
+  - changeSet:
+      id: 007-create-authorities-table
+      author: admin
+      changes:
+        - createTable:
+            tableName: authorities
+            columns:
+              - column:
+                  name: id
+                  type: INT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: authority
+                  type: VARCHAR(50)

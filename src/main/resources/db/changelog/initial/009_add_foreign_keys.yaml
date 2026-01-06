@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 007-add-foreign-keys
+      id: 009-add-foreign-keys
       author: admin
       changes:
         - addForeignKeyConstraint:
@@ -50,3 +50,19 @@ databaseChangeLog:
             referencedColumnNames: id
             constraintName: fk_top_scores_quiz_result
             onDelete: CASCADE
+
+        - addForeignKeyConstraint:
+            baseTableName: users
+            baseColumnNames: role_id
+            referencedTableName: roles
+            referencedColumnNames: id
+            constraintName: fk_role_id
+            onDelete: RESTRICT
+
+        - addForeignKeyConstraint:
+            baseTableName: roles
+            baseColumnNames: authority_id
+            referencedTableName: authorities
+            referencedColumnNames: id
+            constraintName: fk_authority_id
+            onDelete: RESTRICT

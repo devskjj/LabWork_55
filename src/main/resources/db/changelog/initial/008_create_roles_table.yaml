@@ -1,0 +1,23 @@
+databaseChangeLog:
+  - changeSet:
+      id: 008-create-roles-table
+      author: admin
+      changes:
+        - createTable:
+            tableName: roles
+            columns:
+              - column:
+                  name: id
+                  type: INT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: role
+                  type: VARCHAR(50)
+              - column:
+                  name: authority_id
+                  type: INT
+                  constraints:
+                    nullable: false
