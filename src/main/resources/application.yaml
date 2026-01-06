@@ -1,1 +1,22 @@
-spring.application.name=LabWork_55
+server:
+  port: 8089
+
+spring:
+  application:
+    name: OnlineQuizPlatform
+
+  datasource:
+    url: jdbc:h2:./db/test;AUTO_SERVER=TRUE
+    username: admin
+    password: admin
+    driver-class-name: org.h2.Driver
+
+  liquibase:
+    change-log: classpath:/db/changelog/master.yaml
+
+logging:
+  level:
+    root: info
+
+  file:
+    path: log

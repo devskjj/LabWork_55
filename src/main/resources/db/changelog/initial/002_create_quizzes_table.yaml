@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - changeSet:
+      id: 002-create-quizzes-table
+      author: admin
+      changes:
+        - createTable:
+            tableName: quizzes
