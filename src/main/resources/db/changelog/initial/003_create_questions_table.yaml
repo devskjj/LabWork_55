@@ -1,10 +1,10 @@
 databaseChangeLog:
   - changeSet:
-      id: 002-create-quizzes-table
+      id: 003-create-questions-table
       author: admin
       changes:
         - createTable:
-            tableName: quizzes
+            tableName: questions
             columns:
               - column:
                   name: id
@@ -14,17 +14,12 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: title
-                  type: VARCHAR(50)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: description
-                  type: VARCHAR(255)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: creator_id
+                  name: quiz_id
                   type: INT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: question_text
+                  type: VARCHAR(255)
                   constraints:
                     nullable: false

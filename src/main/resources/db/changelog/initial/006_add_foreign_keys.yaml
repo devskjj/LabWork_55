@@ -1,0 +1,44 @@
+databaseChangeLog:
+  - changeSet:
+      id: 006-add-foreign-keys
+      author: admin
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: quizzes
+            baseColumnNames: creator_id
+            referencedTableName: users
+            referencedColumnNames: id
+            constraintName: fk_quizzes_user
+            onDelete: CASCADE
+
+        - addForeignKeyConstraint:
+            baseTableName: quiz_results
+            baseColumnNames: user_id
+            referencedTableName: users
+            referencedColumnNames: id
+            constraintName: fk_quiz_results_user
+            onDelete: CASCADE
+
+        - addForeignKeyConstraint:
+            baseTableName: quiz_results
+            baseColumnNames: quiz_id
+            referencedTableName: quizzes
+            referencedColumnNames: id
+            constraintName: fk_quiz_results_quiz
+            onDelete: CASCADE
+
+        - addForeignKeyConstraint:
+            baseTableName: questions
+            baseColumnNames: quiz_id
+            referencedTableName: quizzes
+            referencedColumnNames: id
+            constraintName: fk_questions_quiz
+            onDelete: CASCADE
+
+        - addForeignKeyConstraint:
+            baseTableName: options
+            baseColumnNames: question_id
+            referencedTableName: questions
+            referencedColumnNames: id
+            constraintName: fk_options_question
+            onDelete: CASCADE
