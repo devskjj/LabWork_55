@@ -11,10 +11,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class QuizDto {
-    private Integer id;
-    private String title;
-    private String description;
-    private Integer creatorId;
-    private List<QuestionDto> questions;
+public class CreateQuestionDto {
+    private Integer quizId;
+    private String questionText;
+    private List<CreateOptionDto> options;
 }

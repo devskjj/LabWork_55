@@ -9,9 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class OptionDto {
-    private Integer id;
-    private Integer questionId;
+public class QuizOptionDto {
     private String optionText;
-    private Boolean isCorrect;
 }
