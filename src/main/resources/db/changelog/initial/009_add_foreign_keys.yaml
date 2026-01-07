@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 008-add-foreign-keys
+      id: 009-add-foreign-keys
       author: admin
       changes:
         - addForeignKeyConstraint:
@@ -58,3 +58,17 @@ databaseChangeLog:
             referencedColumnNames: id
             constraintName: fk_role_id
             onDelete: RESTRICT
+
+        - addForeignKeyConstraint:
+              baseTableName: quiz_timer
+              baseColumnNames: quiz_id
+              referencedTableName: quizzes
+              referencedColumnNames: id
+              constraintName: fk_quiz_timer_quiz
+
+        - addForeignKeyConstraint:
+              baseTableName: quiz_timer
+              baseColumnNames: user_id
+              referencedTableName: users
+              referencedColumnNames: id
+              constraintName: fk_quiz_timer_user
