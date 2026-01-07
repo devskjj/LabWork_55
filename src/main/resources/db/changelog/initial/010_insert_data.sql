@@ -1,10 +1,5 @@
-INSERT INTO authorities (id, authority)
-VALUES (1, 'FULL'),
-       (2, 'REGISTER/LOGIN');
-
 INSERT INTO roles (id, role, authority_id)
-VALUES (1, 'AUTHORIZED', (SELECT id FROM authorities WHERE authority = 'FULL')),
-       (2, 'GUEST', (SELECT id FROM authorities WHERE authority = 'REGISTER/LOGIN'));
+VALUES (1, 'USER');
 
 INSERT INTO users (id, username, password, email, enabled, role_id)
 VALUES (1, 'user1', 'password', 'user1@mail.com', true, 1),

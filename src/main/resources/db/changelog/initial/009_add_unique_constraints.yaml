@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 010-add-unique-constraints
+      id: 009-add-unique-constraints
       author: admin
       changes:
         - addUniqueConstraint:

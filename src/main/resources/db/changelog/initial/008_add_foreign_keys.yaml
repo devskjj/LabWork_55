@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 009-add-foreign-keys
+      id: 008-add-foreign-keys
       author: admin
       changes:
         - addForeignKeyConstraint:
@@ -57,12 +57,4 @@ databaseChangeLog:
             referencedTableName: roles
             referencedColumnNames: id
             constraintName: fk_role_id
-            onDelete: RESTRICT
-
-        - addForeignKeyConstraint:
-            baseTableName: roles
-            baseColumnNames: authority_id
-            referencedTableName: authorities
-            referencedColumnNames: id
-            constraintName: fk_authority_id
             onDelete: RESTRICT

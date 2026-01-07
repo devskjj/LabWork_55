@@ -1,10 +1,10 @@
 databaseChangeLog:
   - changeSet:
-      id: 007-create-authorities-table
+      id: 007-create-roles-table
       author: admin
       changes:
         - createTable:
-            tableName: authorities
+            tableName: roles
             columns:
               - column:
                   name: id
@@ -14,5 +14,5 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: authority
+                  name: role
                   type: VARCHAR(50)
