@@ -26,3 +26,6 @@ databaseChangeLog:
               - column:
                   name: score
                   type: INT
+              - column:
+                  name: quiz_rate_by_user
+                  type: INT

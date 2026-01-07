@@ -1,5 +1,6 @@
 package kg.attractor.labwork_55.errors;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.validation.ValidationException;
 import kg.attractor.labwork_55.services.ErrorService;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.NoSuchElementException;
 
 @Slf4j
+@Hidden
 @RestControllerAdvice
 @RequiredArgsConstructor
 public class GlobalControllerAdvice {
@@ -21,18 +23,21 @@ public class GlobalControllerAdvice {
     @ExceptionHandler(NoSuchElementException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public CustomErrorResponse notSuchElementHandler(NoSuchElementException e) {
+        log.error("Ошибка запроса: ", e);
         return errorService.makeErrorResponse(e);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public CustomErrorResponse validationHandler(MethodArgumentNotValidException e) {
+        log.error("Ошибка запроса: ", e);
         return errorService.makeErrorResponse(e.getBindingResult());
     }
 
     @ExceptionHandler(ValidationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public CustomErrorResponse handleValidation(ValidationException e) {
+        log.error("Ошибка запроса: ", e);
         return errorService.makeErrorResponse(e);
     }
 
