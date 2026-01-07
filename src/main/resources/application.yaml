@@ -2,6 +2,9 @@ server:
   port: 8089
 
 spring:
+  output:
+    ansi:
+      enabled: always
   application:
     name: OnlineQuizPlatform
 
