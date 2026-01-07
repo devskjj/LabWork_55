@@ -1,4 +1,4 @@
-INSERT INTO roles (id, role, authority_id)
+INSERT INTO roles (id, role)
 VALUES (1, 'USER');
 
 INSERT INTO users (id, username, password, email, enabled, role_id)
