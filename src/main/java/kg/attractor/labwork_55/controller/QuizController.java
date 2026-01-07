@@ -2,6 +2,7 @@ package kg.attractor.labwork_55.controller;
 
 import jakarta.validation.Valid;
 import kg.attractor.labwork_55.dto.*;
+import kg.attractor.labwork_55.services.QuizService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
