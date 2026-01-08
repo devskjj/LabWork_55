@@ -178,7 +178,7 @@ public class QuizServiceImpl implements QuizService {
         MapSqlParameterSource params = new MapSqlParameterSource()
                 .addValue("userId", user.getId())
                 .addValue("quizId", quiz.getId())
-                .addValue("score", );
+                .addValue("score", quizResultDao.getUserScore(quizId, email));
         try {
             quizResultDao.submitScore(params);
         } catch (DataAccessException dae) {
