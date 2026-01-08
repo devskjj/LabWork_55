@@ -1,59 +1,59 @@
 INSERT INTO roles (id, role)
 VALUES (1, 'USER');
 
-INSERT INTO users (id, username, password, email, enabled, role_id)
-VALUES (1, 'user1', '$2a$12$gF2Cfa93BnZ/D2O8sMEwPOvrja2PT2clcqFKc/uve/Tm1ayy83vsu', 'user1@mail.com', true, 1),
-       (2, 'user2', '$2a$12$gF2Cfa93BnZ/D2O8sMEwPOvrja2PT2clcqFKc/uve/Tm1ayy83vsu', 'user2@mail.com', true, 1),
-       (3, 'user3', '$2a$12$gF2Cfa93BnZ/D2O8sMEwPOvrja2PT2clcqFKc/uve/Tm1ayy83vsu', 'user3@mail.com', true, 1),
-       (4, 'user4', '$2a$12$gF2Cfa93BnZ/D2O8sMEwPOvrja2PT2clcqFKc/uve/Tm1ayy83vsu', 'user4@mail.com', true, 1),
-       (5, 'user5', '$2a$12$gF2Cfa93BnZ/D2O8sMEwPOvrja2PT2clcqFKc/uve/Tm1ayy83vsu', 'user5@mail.com', true, 1),
-       (6, 'user6', '$2a$12$gF2Cfa93BnZ/D2O8sMEwPOvrja2PT2clcqFKc/uve/Tm1ayy83vsu', 'user6@mail.com', true, 1),
-       (7, 'user7', '$2a$12$gF2Cfa93BnZ/D2O8sMEwPOvrja2PT2clcqFKc/uve/Tm1ayy83vsu', 'user7@mail.com', true, 1),
-       (8, 'user8', '$2a$12$gF2Cfa93BnZ/D2O8sMEwPOvrja2PT2clcqFKc/uve/Tm1ayy83vsu', 'user8@mail.com', true, 1),
-       (9, 'user9', '$2a$12$gF2Cfa93BnZ/D2O8sMEwPOvrja2PT2clcqFKc/uve/Tm1ayy83vsu', 'user9@mail.com', true, 1),
-       (10, 'user10', '$2a$12$gF2Cfa93BnZ/D2O8sMEwPOvrja2PT2clcqFKc/uve/Tm1ayy83vsu', 'user10@mail.com', true, 1);
+INSERT INTO users (username, password, email, enabled, role_id)
+VALUES ('user1', '$2a$12$gF2Cfa93BnZ/D2O8sMEwPOvrja2PT2clcqFKc/uve/Tm1ayy83vsu', 'user1@mail.com', true, 1),
+       ('user2', '$2a$12$gF2Cfa93BnZ/D2O8sMEwPOvrja2PT2clcqFKc/uve/Tm1ayy83vsu', 'user2@mail.com', true, 1),
+       ('user3', '$2a$12$gF2Cfa93BnZ/D2O8sMEwPOvrja2PT2clcqFKc/uve/Tm1ayy83vsu', 'user3@mail.com', true, 1),
+       ('user4', '$2a$12$gF2Cfa93BnZ/D2O8sMEwPOvrja2PT2clcqFKc/uve/Tm1ayy83vsu', 'user4@mail.com', true, 1),
+       ('user5', '$2a$12$gF2Cfa93BnZ/D2O8sMEwPOvrja2PT2clcqFKc/uve/Tm1ayy83vsu', 'user5@mail.com', true, 1),
+       ('user6', '$2a$12$gF2Cfa93BnZ/D2O8sMEwPOvrja2PT2clcqFKc/uve/Tm1ayy83vsu', 'user6@mail.com', true, 1),
+       ('user7', '$2a$12$gF2Cfa93BnZ/D2O8sMEwPOvrja2PT2clcqFKc/uve/Tm1ayy83vsu', 'user7@mail.com', true, 1),
+       ('user8', '$2a$12$gF2Cfa93BnZ/D2O8sMEwPOvrja2PT2clcqFKc/uve/Tm1ayy83vsu', 'user8@mail.com', true, 1),
+       ('user9', '$2a$12$gF2Cfa93BnZ/D2O8sMEwPOvrja2PT2clcqFKc/uve/Tm1ayy83vsu', 'user9@mail.com', true, 1),
+       ('user10', '$2a$12$gF2Cfa93BnZ/D2O8sMEwPOvrja2PT2clcqFKc/uve/Tm1ayy83vsu', 'user10@mail.com', true, 1);
 
-INSERT INTO quizzes (id, title, description, creator_id)
-VALUES (1, 'Животные', 'Вопросы о животных', 1),
-       (2, 'Цвета', 'Вопросы о цветах и их названиях', 2),
-       (3, 'Природа', 'Вопросы о растениях и природных объектах', 3),
-       (4, 'География', 'Вопросы о странах, городах и реках', 4),
-       (5, 'Математика для детей', 'Простые арифметические задачи', 5);
+INSERT INTO quizzes (title, description, creator_id)
+VALUES ('Животные', 'Вопросы о животных', 1),
+       ('Цвета', 'Вопросы о цветах и их названиях', 2),
+       ('Природа', 'Вопросы о растениях и природных объектах', 3),
+       ('География', 'Вопросы о странах, городах и реках', 4),
+       ('Математика для детей', 'Простые арифметические задачи', 5);
 
-INSERT INTO questions (id, quiz_id, question_text)
-VALUES (1, 1, 'Какое животное король джунглей?'),
-       (2, 1, 'Кто умеет летать ночью и издает писк?'),
-       (3, 1, 'Какое животное живет в воде и крякает?'),
-       (4, 1, 'Кто самый большой млекопитающий на земле?'),
-       (5, 1, 'Какое животное умеет менять цвет кожи для маскировки?');
+INSERT INTO questions (quiz_id, question_text)
+VALUES (1, 'Какое животное король джунглей?'),
+       (1, 'Кто умеет летать ночью и издает писк?'),
+       (1, 'Какое животное живет в воде и крякает?'),
+       (1, 'Кто самый большой млекопитающий на земле?'),
+       (1, 'Какое животное умеет менять цвет кожи для маскировки?');
 
-INSERT INTO questions (id, quiz_id, question_text)
-VALUES (6, 2, 'Какой цвет смешивается из красного и синего?'),
-       (7, 2, 'Какой цвет символизирует траву?'),
-       (8, 2, 'Какой цвет солнца?'),
-       (9, 2, 'Какой цвет образуется при смешении желтого и синего?'),
-       (10, 2, 'Какой цвет неба в ясный день?');
+INSERT INTO questions (quiz_id, question_text)
+VALUES (2, 'Какой цвет смешивается из красного и синего?'),
+       (2, 'Какой цвет символизирует траву?'),
+       (2, 'Какой цвет солнца?'),
+       (2, 'Какой цвет образуется при смешении желтого и синего?'),
+       (2, 'Какой цвет неба в ясный день?');
 
-INSERT INTO questions (id, quiz_id, question_text)
-VALUES (11, 3, 'Как называется дерево с шишками и иголками?'),
-       (12, 3, 'Какой цвет имеют листья большинства деревьев летом?'),
-       (13, 3, 'Как называется большой водоем с пресной водой?'),
-       (14, 3, 'Как называется природное явление, когда идет снег?'),
-       (15, 3, 'Какое растение производит мед?');
+INSERT INTO questions (quiz_id, question_text)
+VALUES (3, 'Как называется дерево с шишками и иголками?'),
+       (3, 'Какой цвет имеют листья большинства деревьев летом?'),
+       (3, 'Как называется большой водоем с пресной водой?'),
+       (3, 'Как называется природное явление, когда идет снег?'),
+       (3, 'Какое растение производит мед?');
 
-INSERT INTO questions (id, quiz_id, question_text)
-VALUES (16, 4, 'Столица России?'),
-       (17, 4, 'Какая самая большая страна в мире по территории?'),
-       (18, 4, 'На каком континенте находится Египет?'),
-       (19, 4, 'Как называется самая длинная река в мире?'),
-       (20, 4, 'Страна известная кенгуру и коалой?');
+INSERT INTO questions (quiz_id, question_text)
+VALUES (4, 'Столица России?'),
+       (4, 'Какая самая большая страна в мире по территории?'),
+       (4, 'На каком континенте находится Египет?'),
+       (4, 'Как называется самая длинная река в мире?'),
+       (4, 'Страна известная кенгуру и коалой?');
 
-INSERT INTO questions (id, quiz_id, question_text)
-VALUES (21, 5, 'Сколько будет 2 + 3?'),
-       (22, 5, 'Сколько будет 10 - 4?'),
-       (23, 5, 'Сколько будет 3 * 3?'),
-       (24, 5, 'Сколько будет 12 / 4?'),
-       (25, 5, 'Какое число идет после 7?');
+INSERT INTO questions (quiz_id, question_text)
+VALUES (5, 'Сколько будет 2 + 3?'),
+       (5, 'Сколько будет 10 - 4?'),
+       (5, 'Сколько будет 3 * 3?'),
+       (5, 'Сколько будет 12 / 4?'),
+       (5, 'Какое число идет после 7?');
 
 INSERT INTO options (question_id, option_text, is_correct)
 VALUES (1, 'Слон', false),
@@ -185,65 +185,65 @@ VALUES (21, '5', true),
        (25, '7', false),
        (25, '9', false);
 
-INSERT INTO quiz_results (id, user_id, quiz_id, score, quiz_rate_by_user)
-VALUES (1, 1, 1, 85, 5),
-       (2, 2, 1, 92, 2),
-       (3, 3, 1, 78, 1),
-       (4, 4, 1, 95, 2),
-       (5, 5, 1, 88, 3),
-       (6, 6, 1, 74, 2),
-       (7, 7, 1, 67, 4),
-       (8, 8, 1, 90, 5),
-       (9, 9, 1, 81, 3),
-       (10, 10, 1, 99, 3);
+INSERT INTO quiz_results (user_id, quiz_id, score, quiz_rate_by_user)
+VALUES (1, 1, 85, 5),
+       (2, 1, 92, 2),
+       (3, 1, 78, 1),
+       (4, 1, 95, 2),
+       (5, 1, 88, 3),
+       (6, 1, 74, 2),
+       (7, 1, 67, 4),
+       (8, 1, 90, 5),
+       (9, 1, 81, 3),
+       (10, 1, 99, 3);
 
-INSERT INTO quiz_results (id, user_id, quiz_id, score, quiz_rate_by_user)
-VALUES (11, 1, 2, 80, 2),
-       (12, 2, 2, 85, 3),
-       (13, 3, 2, 78, 4),
-       (14, 4, 2, 92, 1),
-       (15, 5, 2, 87, 1),
-       (16, 6, 2, 73, 5),
-       (17, 7, 2, 90, 2),
-       (18, 8, 2, 68, 2),
-       (19, 9, 2, 95, 1),
-       (20, 10, 2, 88, 4);
+INSERT INTO quiz_results (user_id, quiz_id, score, quiz_rate_by_user)
+VALUES (1, 2, 80, 2),
+       (2, 2, 85, 3),
+       (3, 2, 78, 4),
+       (4, 2, 92, 1),
+       (5, 2, 87, 1),
+       (6, 2, 73, 5),
+       (7, 2, 90, 2),
+       (8, 2, 68, 2),
+       (9, 2, 95, 1),
+       (10, 2, 88, 4);
 
-INSERT INTO quiz_results (id, user_id, quiz_id, score, quiz_rate_by_user)
-VALUES (21, 1, 3, 75, 3),
-       (22, 2, 3, 82, 3),
-       (23, 3, 3, 79, 2),
-       (24, 4, 3, 88, 5),
-       (25, 5, 3, 91, 1),
-       (26, 6, 3, 67, 5),
-       (27, 7, 3, 85, 4),
-       (28, 8, 3, 70, 2),
-       (29, 9, 3, 96, 3),
-       (30, 10, 3, 89, 3);
+INSERT INTO quiz_results (user_id, quiz_id, score, quiz_rate_by_user)
+VALUES (1, 3, 75, 3),
+       (2, 3, 82, 3),
+       (3, 3, 79, 2),
+       (4, 3, 88, 5),
+       (5, 3, 91, 1),
+       (6, 3, 67, 5),
+       (7, 3, 85, 4),
+       (8, 3, 70, 2),
+       (9, 3, 96, 3),
+       (10, 3, 89, 3);
 
-INSERT INTO quiz_results (id, user_id, quiz_id, score, quiz_rate_by_user)
-VALUES (31, 1, 4, 95, 3),
-       (32, 2, 4, 89, 2),
-       (33, 3, 4, 93, 2),
-       (34, 4, 4, 87, 4),
-       (35, 5, 4, 90, 5),
-       (36, 6, 4, 72, 5),
-       (37, 7, 4, 77, 2),
-       (38, 8, 4, 85, 1),
-       (39, 9, 4, 98, 1),
-       (40, 10, 4, 80, 4);
+INSERT INTO quiz_results (user_id, quiz_id, score, quiz_rate_by_user)
+VALUES (1, 4, 95, 3),
+       (2, 4, 89, 2),
+       (3, 4, 93, 2),
+       (4, 4, 87, 4),
+       (5, 4, 90, 5),
+       (6, 4, 72, 5),
+       (7, 4, 77, 2),
+       (8, 4, 85, 1),
+       (9, 4, 98, 1),
+       (10, 4, 80, 4);
 
-INSERT INTO quiz_results (id, user_id, quiz_id, score, quiz_rate_by_user)
-VALUES (41, 1, 5, 100, 3),
-       (42, 2, 5, 85, 3),
-       (43, 3, 5, 92, 1),
-       (44, 4, 5, 78, 4),
-       (45, 5, 5, 88, 4),
-       (46, 6, 5, 65, 2),
-       (47, 7, 5, 70, 5),
-       (48, 8, 5, 95, 5),
-       (49, 9, 5, 90, 1),
-       (50, 10, 5, 82, 2);
+INSERT INTO quiz_results (user_id, quiz_id, score, quiz_rate_by_user)
+VALUES (1, 5, 100, 3),
+       (2, 5, 85, 3),
+       (3, 5, 92, 1),
+       (4, 5, 78, 4),
+       (5, 5, 88, 4),
+       (6, 5, 65, 2),
+       (7, 5, 70, 5),
+       (8, 5, 95, 5),
+       (9, 5, 90, 1),
+       (10, 5, 82, 2);
 
 INSERT INTO top_scores (result_id, score)
 SELECT id, score
