@@ -52,10 +52,10 @@ public class QuizDao {
         }
     }
 
-    public Optional<Quiz> getQuizByQuestion(Integer id) {
+    public Optional<Integer> getQuizByQuestion(Integer id) {
         String sql = "SELECT quiz_id FROM questions WHERE id = ?";
         try {
-            return Optional.ofNullable(jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Quiz.class), id));
+            return Optional.ofNullable(jdbcTemplate.queryForObject(sql, Integer.class, id));
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }

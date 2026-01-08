@@ -44,10 +44,10 @@ public class QuestionDao {
         }
     }
 
-    public Optional<Question> getQuestionByOption (Integer id) {
+    public Optional<Integer> getQuestionByOption (Integer id) {
         String sql = "SELECT question_id FROM options WHERE id = ?";
         try {
-            return Optional.ofNullable(jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Question.class), id));
+            return Optional.ofNullable(jdbcTemplate.queryForObject(sql, Integer.class, id));
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }

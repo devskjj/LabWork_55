@@ -129,14 +129,16 @@ public class QuizServiceImpl implements QuizService {
 
     @Override
     public Question getQuestionByOption (Integer optionId) {
-        return questionDao.getQuestionByOption(optionId)
+        Integer questionId =  questionDao.getQuestionByOption(optionId)
                 .orElseThrow(() -> new QuestionNotFoundException("Question for option id " + optionId + " not found."));
+        return getQuestionById(questionId);
     }
 
     @Override
     public Quiz getQuizByQuestion (Integer questionId) {
-        return quizDao.getQuizByQuestion(questionId)
+        Integer quizId = quizDao.getQuizByQuestion(questionId)
                 .orElseThrow(() -> new QuestionNotFoundException("Quiz for question id " + questionId + " not found."));
+        return getQuizById(quizId);
     }
 
     @Override
@@ -150,15 +152,25 @@ public class QuizServiceImpl implements QuizService {
         UserDetails userAuth = (UserDetails) auth.getPrincipal();
         String email = Objects.requireNonNull(userAuth).getUsername();
         User user = userService.getUserByEmail(email);
+        log.info("Submitting answers for user: {} (id={}) to quizId={}", email, user.getId(), quizId);
+
         Quiz quiz = getQuizById(quizId);
+        log.info("Fetched quiz: {} (id={})", quiz.getTitle(), quiz.getId());
+
         answers.forEach(a -> {
             Question question = getQuestionById(a.getQuestionId());
             Option option = getOptionById(a.getOptionId());
+            log.info("Validating answer: questionId={}, optionId={}", a.getQuestionId(), a.getOptionId());
+            log.info("Fetched question: {} (id={})", question.getQuestionText(), question.getId());
+            log.info("Fetched option: {} (id={})", option.getOptionText(), option.getId());
+
             if (!Objects.equals(question.getId(), getQuestionByOption(option.getId()).getId())) {
-                throw new FailedToCreateException("Option does not belong to this question.");
+                log.error("Option {} does not belong to question {}", option.getId(), question.getId());
+                throw new FailedToCreateException("Option " + option.getId() + " does not belong to this question.");
             }
             if (!Objects.equals(quizId, getQuizByQuestion(question.getId()).getId())) {
-                throw new FailedToCreateException("Question does not belong to this quiz.");
+                log.error("Question {} does not belong to quiz {}", question.getId(), quizId);
+                throw new FailedToCreateException("Question " + question.getId() + " does not belong to this quiz.");
             }
         });
         LocalDateTime now = LocalDateTime.now();
@@ -169,20 +181,27 @@ public class QuizServiceImpl implements QuizService {
                     .addValue("questionId", uad.getQuestionId())
                     .addValue("optionId", uad.getOptionId())
                     .addValue("answeredAt", now);
+            log.info("Inserting answer: {}", params.getValues());
             try {
                 quizDao.submitUserAnswers(params);
+                log.info("Successfully inserted answer for questionId={}", uad.getQuestionId());
             } catch (DataAccessException dae) {
-                throw new FailedToCreateException("Failed to save user answers.");
+                log.error("Failed to insert answer for questionId={}", uad.getQuestionId(), dae);
+                throw new FailedToCreateException("Failed to save user answer because user already answered that question.");
             }
         }
+        log.info("All answers submitted successfully for quizId={}", quizId);
         MapSqlParameterSource params = new MapSqlParameterSource()
                 .addValue("userId", user.getId())
                 .addValue("quizId", quiz.getId())
                 .addValue("score", quizResultDao.getUserScore(quizId, email));
+        log.info("Preparing to submit quiz score for userId={}, quizId={}, score={}", user.getId(), quiz.getId(), params.getValue("score"));
         try {
             quizResultDao.submitScore(params);
+            log.info("Successfully submitted quiz score for userId={}, quizId={}", user.getId(), quiz.getId());
         } catch (DataAccessException dae) {
-            throw new FailedToCreateException("Failed to save quiz score.");
+            log.error("Failed to save quiz score for userId={}, quizId={}, params={}", user.getId(), quiz.getId(), params.getValues(), dae);
+            throw new FailedToCreateException("Failed to save quiz score because user already scored that quiz.");
         }
     }
 
@@ -202,14 +221,19 @@ public class QuizServiceImpl implements QuizService {
         UserDetails userAuth = (UserDetails) auth.getPrincipal();
         String email = Objects.requireNonNull(userAuth).getUsername();
         User user = userService.getUserByEmail(email);
+        log.info("User '{}' (id={}) is submitting rating for quizId={}", email, user.getId(), quizId);
+        log.info("Submitted rating value: {}", rating.getRate());
         Quiz quiz = getQuizById(quizId);
+        log.info("Fetched quiz: '{}' (id={})", quiz.getTitle(), quiz.getId());
         MapSqlParameterSource params = new MapSqlParameterSource()
                 .addValue("quizRateByUser", rating.getRate())
                 .addValue("userId", user.getId())
                 .addValue("quizId", quizId);
 
+        log.info("Executing update with params: {}", params.getValues());
         int updated = quizDao.submitQuizRating(params);
         if (updated == 0) {
+            log.warn("No quiz result found for userId={} and quizId={}. Cannot update rating.", user.getId(), quizId);
             throw new FailedToCreateException("Quiz result not found. Cannot update rating.");
         }
     }
