@@ -16,7 +16,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RequestMapping("/api/quizzes")
 public class QuizController {
-    private QuizService quizService;
+    private final QuizService quizService;
 
     @PostMapping()
     public ResponseEntity<?> createNewQuiz(@Valid @RequestBody CreateQuizDto dto, Authentication auth) {
@@ -55,7 +55,7 @@ public class QuizController {
     }
 
     @GetMapping("/{quizId}/leaderboard")
-    public ResponseEntity<?> getLeaderBoard(PathVariable quizId) {
+    public ResponseEntity<?> getLeaderBoard(@PathVariable Integer quizId) {
         QuizLeaderboardDto leaderboard = quizService.getQuizLeaderBoard(quizId);
         return ResponseEntity.status(HttpStatus.OK).body(leaderboard);
     }
