@@ -78,6 +78,4 @@ public class QuizDao {
         String sql = "INSERT INTO user_answers (user_id, quiz_id, question_id, option_id, answered_at) VALUES (:userId, :quizId, :questionId, :optionId, :answeredAt)";
         parameterJdbcTemplate.update(sql, params);
     }
-
-
 }
