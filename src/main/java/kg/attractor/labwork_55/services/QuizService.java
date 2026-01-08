@@ -10,6 +10,10 @@ import java.util.List;
 public interface QuizService {
     Integer createQuiz(@Valid CreateQuizDto dto, Authentication auth);
 
+    Integer createQuestion(Integer quizId, List<CreateQuestionDto> questions);
+
+    void createOption(Integer questionId, List<CreateOptionDto> options);
+
     List<ViewQuizGeneralDto> getAllQuizzes();
 
     ViewQuizDetailedDto getQuizById(Integer quizId);

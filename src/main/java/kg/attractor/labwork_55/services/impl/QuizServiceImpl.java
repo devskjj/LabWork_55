@@ -21,6 +21,16 @@ public class QuizServiceImpl implements QuizService {
     }
 
     @Override
+    public Integer createQuestion(Integer quizId, List<CreateQuestionDto> questions) {
+        return 0;
+    }
+
+    @Override
+    public void createOption(Integer questionId, List<CreateOptionDto> options) {
+
+    }
+
+    @Override
     public List<ViewQuizGeneralDto> getAllQuizzes() {
         return List.of();
     }

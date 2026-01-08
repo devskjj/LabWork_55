@@ -14,6 +14,5 @@ import java.util.List;
 public class CreateQuizDto {
     private String title;
     private String description;
-    private Integer creatorId;
     private List<CreateQuestionDto> questions;
 }
