@@ -13,7 +13,7 @@ import lombok.*;
 @Builder
 public class User {
     private Integer id;
-    @NotBlank(message = "Password must not be blank.")
+    @NotBlank(message = "Username can not be blank.")
     @Size(max = 50, message = "Max length is 50")
     private String username;
     @NotBlank(message = "Password must not be blank.")

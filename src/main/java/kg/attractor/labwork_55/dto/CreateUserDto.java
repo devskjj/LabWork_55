@@ -13,6 +13,7 @@ import lombok.*;
 @Builder
 public class CreateUserDto {
     @NotBlank(message = "Username can not be blank.")
+    @Size(max = 50, message = "Max length is 50")
     private String username;
     @NotBlank(message = "Password must not be blank.")
     @Size(min = 5, max = 24, message = "Password length must be between 5 and 24 characters.")
@@ -20,5 +21,6 @@ public class CreateUserDto {
     private String password;
     @NotBlank(message = "Email must not be blank.")
     @Email(message = "Email must match email standards.")
+    @Size(max = 150, message = "Max length is 150")
     private String email;
 }
