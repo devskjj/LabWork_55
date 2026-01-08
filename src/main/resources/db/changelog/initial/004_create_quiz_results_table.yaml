@@ -26,6 +26,10 @@ databaseChangeLog:
               - column:
                   name: score
                   type: INT
+                  constraints:
+                    nullable: false
               - column:
                   name: quiz_rate_by_user
                   type: INT
+                  constraints:
+                    nullable: false
