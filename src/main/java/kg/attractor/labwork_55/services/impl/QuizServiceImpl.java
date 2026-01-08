@@ -193,7 +193,8 @@ public class QuizServiceImpl implements QuizService {
         }
         UserDetails userAuth = (UserDetails) auth.getPrincipal();
         String email = Objects.requireNonNull(userAuth).getUsername();
-        return quizResultDao.getQuizResults(quizId, email);
+        User user = userService.getUserByEmail(email);
+        return quizResultDao.getQuizResults(quizId, user);
     }
 
     @Override

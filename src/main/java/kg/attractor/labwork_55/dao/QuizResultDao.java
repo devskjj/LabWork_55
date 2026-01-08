@@ -2,8 +2,11 @@ package kg.attractor.labwork_55.dao;
 
 import kg.attractor.labwork_55.dto.QuizCorrectAnswerDto;
 import kg.attractor.labwork_55.dto.QuizResultsDto;
+import kg.attractor.labwork_55.exceptions.QuizNotFoundException;
+import kg.attractor.labwork_55.models.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -24,8 +27,15 @@ public class QuizResultDao {
         this.parameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
     }
 
-    public QuizResultsDto getQuizResults(Integer quizId, String email) {
-        int score = getUserScore(quizId, email);
+    public QuizResultsDto getQuizResults(Integer quizId, User user) {
+        Integer score;
+        String scoreSql = "SELECT score FROM quiz_results WHERE quiz_id = ? AND user_id = ?";
+
+        try {
+            score = jdbcTemplate.queryForObject(scoreSql, Integer.class, quizId, user.getId());
+        } catch (EmptyResultDataAccessException e) {
+            throw new QuizNotFoundException("Quiz score not found.");
+        }
 
         Integer totalQuestions = jdbcTemplate.queryForObject(
                 "SELECT COUNT(*) FROM questions WHERE quiz_id = ?",
@@ -35,7 +45,7 @@ public class QuizResultDao {
 
         String result = score + "/" + totalQuestions;
         return QuizResultsDto.builder()
-                .correctAnswers(getCorrectUserAnswers(quizId, email))
+                .correctAnswers(getCorrectUserAnswers(quizId, user.getEmail()))
                 .result(result)
                 .build();
     }
