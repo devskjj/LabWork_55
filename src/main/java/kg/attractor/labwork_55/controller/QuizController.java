@@ -37,9 +37,9 @@ public class QuizController {
     }
 
     @PostMapping("/{quizId}/solve")
-    public ResponseEntity<?> submitAnswers(PathVariable quizId, @Valid @RequestBody UserAnswerDto answers, Authentication auth) {
+    public ResponseEntity<?> submitAnswers(@PathVariable Integer quizId, @Valid @RequestBody List<@Valid UserAnswerDto> answers, Authentication auth) {
         quizService.submitQuizAnswers(quizId, answers, auth);
-        return ResponseEntity.status(HttpStatus.OK).body(Map.of("result", "Answers to the quiz with ID " + quizId + " has been successfully submitted."));
+        return ResponseEntity.status(HttpStatus.OK).body(Map.of("result", "Answers to the quiz with ID " + quizId + " have been successfully submitted."));
     }
 
     @GetMapping("/{quizId}/results")
@@ -49,7 +49,7 @@ public class QuizController {
     }
 
     @PostMapping("/{quizId}/rate")
-    public ResponseEntity<?> rateQuiz(PathVariable quizId, Authentication auth) {
+    public ResponseEntity<?> rateQuiz(@PathVariable Integer quizId, @Valid @RequestBody Integer rate, Authentication auth) {
         quizService.submitQuizRating(quizId, auth);
         return ResponseEntity.status(HttpStatus.OK).body(Map.of("result", "Rating of the quiz with ID " + quizId + " has been successfully updated."));
     }

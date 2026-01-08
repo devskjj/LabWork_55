@@ -52,6 +52,15 @@ public class QuizDao {
         }
     }
 
+    public Optional<Quiz> getQuizByQuestion(Integer id) {
+        String sql = "SELECT quiz_id FROM questions WHERE id = ?";
+        try {
+            return Optional.ofNullable(jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Quiz.class), id));
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
+    }
+
     public List<ViewQuizGeneralDto> getAllQuizzesGeneralInfo() {
         String sql = """
                 SELECT
@@ -64,5 +73,11 @@ public class QuizDao {
                 """;
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(ViewQuizGeneralDto.class));
     }
+
+    public void submitUserAnswers(MapSqlParameterSource params){
+        String sql = "INSERT INTO user_answers (user_id, quiz_id, question_id, option_id, answered_at) VALUES (:userId, :quizId, :questionId, :optionId, :answeredAt)";
+        parameterJdbcTemplate.update(sql, params);
+    }
+
 
 }

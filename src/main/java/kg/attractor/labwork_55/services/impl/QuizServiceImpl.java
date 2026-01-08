@@ -14,12 +14,13 @@ import kg.attractor.labwork_55.services.QuizService;
 import kg.attractor.labwork_55.services.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
+import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Objects;
@@ -127,14 +128,53 @@ public class QuizServiceImpl implements QuizService {
     }
 
     @Override
+    public Question getQuestionByOption (Integer optionId) {
+        return questionDao.getQuestionByOption(optionId)
+                .orElseThrow(() -> new QuestionNotFoundException("Question for option id " + optionId + " not found."));
+    }
+
+    @Override
+    public Quiz getQuizByQuestion (Integer questionId) {
+        return quizDao.getQuizByQuestion(questionId)
+                .orElseThrow(() -> new QuestionNotFoundException("Quiz for question id " + questionId + " not found."));
+    }
+
+    @Override
     public Option getOptionById(Integer optionId) {
         return optionDao.getOptionById(optionId)
                 .orElseThrow(() -> new OptionNotFoundException("Option with id " + optionId + " not found."));
     }
 
     @Override
-    public void submitQuizAnswers(PathVariable quizId, UserAnswerDto answers, Authentication auth) {
-
+    public void submitQuizAnswers(Integer quizId, List<UserAnswerDto> answers, Authentication auth) {
+        UserDetails userAuth = (UserDetails) auth.getPrincipal();
+        String email = Objects.requireNonNull(userAuth).getUsername();
+        User user = userService.getUserByEmail(email);
+        Quiz quiz = getQuizById(quizId);
+        answers.forEach(a -> {
+            Question question = getQuestionById(a.getQuestionId());
+            Option option = getOptionById(a.getOptionId());
+            if (!Objects.equals(question.getId(), getQuestionByOption(option.getId()).getId())) {
+                throw new FailedToCreateException("Option does not belong to this question.");
+            }
+            if (!Objects.equals(quizId, getQuizByQuestion(question.getId()).getId())) {
+                throw new FailedToCreateException("Question does not belong to this quiz.");
+            }
+        });
+        LocalDateTime now = LocalDateTime.now();
+        for (UserAnswerDto uad : answers) {
+            MapSqlParameterSource params = new MapSqlParameterSource()
+                    .addValue("userId", user.getId())
+                    .addValue("quizId", quiz.getId())
+                    .addValue("questionId", uad.getQuestionId())
+                    .addValue("optionId", uad.getOptionId())
+                    .addValue("answeredAt", now);
+            try {
+                quizDao.submitUserAnswers(params);
+            } catch (DataAccessException dae) {
+                throw new FailedToCreateException("Failed to save user answers");
+            }
+        }
     }
 
     @Override
@@ -146,8 +186,11 @@ public class QuizServiceImpl implements QuizService {
     }
 
     @Override
-    public void submitQuizRating(PathVariable quizId, Authentication auth) {
-
+    public void submitQuizRating(Integer quizId, Authentication auth) {
+        UserDetails userAuth = (UserDetails) auth.getPrincipal();
+        String email = Objects.requireNonNull(userAuth).getUsername();
+        User user = userService.getUserByEmail(email);
+        Quiz quiz = getQuizById(quizId);
     }
 
     @Override

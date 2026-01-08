@@ -6,7 +6,6 @@ import kg.attractor.labwork_55.models.Option;
 import kg.attractor.labwork_55.models.Question;
 import kg.attractor.labwork_55.models.Quiz;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -27,13 +26,17 @@ public interface QuizService {
 
     Question getQuestionById(Integer questionId);
 
+    Question getQuestionByOption (Integer optionId);
+
+    Quiz getQuizByQuestion (Integer questionId);
+
     Option getOptionById(Integer optionId);
 
-    void submitQuizAnswers(PathVariable quizId, @Valid UserAnswerDto answers, Authentication auth);
+    void submitQuizAnswers(Integer quizId, List<UserAnswerDto> answers, Authentication auth);
 
     QuizResultsDto getQuizResults(Integer quizId, Authentication auth);
 
-    void submitQuizRating(PathVariable quizId, Authentication auth);
+    void submitQuizRating(Integer quizId, Authentication auth);
 
     QuizLeaderboardDto getQuizLeaderBoard(Integer quizId);
 }
