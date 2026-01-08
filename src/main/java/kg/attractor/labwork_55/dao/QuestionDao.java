@@ -1,7 +1,6 @@
 package kg.attractor.labwork_55.dao;
 
 import kg.attractor.labwork_55.models.Question;
-import kg.attractor.labwork_55.models.Quiz;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
