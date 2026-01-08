@@ -22,3 +22,8 @@ databaseChangeLog:
             tableName: user_answers
             columnNames: user_id, question_id
             constraintName: uq_user_question
+
+        - addUniqueConstraint:
+            tableName: quiz_results
+            columnNames: user_id, quiz_id
+            constraintName: uq_user_quiz_result

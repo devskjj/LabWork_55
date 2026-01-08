@@ -3,15 +3,26 @@ package kg.attractor.labwork_55.dao;
 import kg.attractor.labwork_55.dto.QuizCorrectAnswerDto;
 import kg.attractor.labwork_55.dto.QuizResultsDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 
+import javax.sql.DataSource;
 import java.util.List;
 
 @Component
 @RequiredArgsConstructor
 public class QuizResultDao {
     private final JdbcTemplate jdbcTemplate;
+    private final NamedParameterJdbcTemplate parameterJdbcTemplate;
+
+    @Autowired
+    public QuizResultDao(DataSource dataSource) {
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
+        this.parameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+    }
 
     public QuizResultsDto getQuizResults(Integer quizId, String email) {
         int score = getUserScore(quizId, email);
@@ -76,5 +87,10 @@ public class QuizResultDao {
         String sql = "SELECT COUNT(*) FROM quizzes WHERE id = ?";
         Integer count = jdbcTemplate.queryForObject(sql, Integer.class, quizId);
         return count != null && count > 0;
+    }
+
+    public void submitScore(MapSqlParameterSource params) {
+        String sql = "INSERT INTO quiz_results (user_id, quiz_id, score) VALUES (:userId, :quizId, :score)";
+        parameterJdbcTemplate.update(sql, params);
     }
 }
