@@ -9,5 +9,6 @@ import lombok.*;
 @Builder
 public class QuizCorrectAnswerDto {
     private Integer questionId;
+    private Integer optionId;
     private String answer;
 }

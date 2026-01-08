@@ -142,7 +142,9 @@ public class QuizServiceImpl implements QuizService {
         if (!quizResultDao.quizExists(quizId)) {
             throw new QuizNotFoundException("Quiz with id " + quizId + " not found");
         }
-        return quizResultDao.getQuizResults(quizId, auth);
+        UserDetails userAuth = (UserDetails) auth.getPrincipal();
+        String email = Objects.requireNonNull(userAuth).getUsername();
+        return quizResultDao.getQuizResults(quizId, email);
     }
 
     @Override
