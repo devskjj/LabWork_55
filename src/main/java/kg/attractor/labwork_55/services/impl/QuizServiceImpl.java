@@ -1,6 +1,9 @@
 package kg.attractor.labwork_55.services.impl;
 
+import kg.attractor.labwork_55.dao.QuizLeaderboardDao;
 import kg.attractor.labwork_55.dto.*;
+import kg.attractor.labwork_55.exceptions.QuizNotFoundException;
+import kg.attractor.labwork_55.exceptions.UserNotFoundException;
 import kg.attractor.labwork_55.services.QuizService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -8,12 +11,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class QuizServiceImpl implements QuizService {
+    private final QuizLeaderboardDao quizLeaderboardDao;
 
     @Override
     public Integer createQuiz(CreateQuizDto dto, Authentication auth) {
@@ -56,7 +61,15 @@ public class QuizServiceImpl implements QuizService {
     }
 
     @Override
-    public QuizLeaderboardDto getQuizLeaderBoard(PathVariable quizId) {
-        return null;
+    public QuizLeaderboardDto getQuizLeaderBoard(Integer quizId) {
+        if (!quizLeaderboardDao.quizExists(quizId)) {
+            throw new QuizNotFoundException("Quiz with id " + quizId + " not found");
+        }
+
+        LinkedHashMap<String, Integer> leaderboard = quizLeaderboardDao.getLeaderboard(quizId);
+
+        return QuizLeaderboardDto.builder()
+                .leaderboard(leaderboard)
+                .build();
     }
 }

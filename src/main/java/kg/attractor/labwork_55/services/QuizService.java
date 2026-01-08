@@ -24,5 +24,5 @@ public interface QuizService {
 
     void submitQuizRating(PathVariable quizId, Authentication auth);
 
-    QuizLeaderboardDto getQuizLeaderBoard(PathVariable quizId);
+    QuizLeaderboardDto getQuizLeaderBoard(Integer quizId);
 }
