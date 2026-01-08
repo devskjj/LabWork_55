@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 009-add-foreign-keys
+      id: 010-add-foreign-keys
       author: admin
       changes:
         - addForeignKeyConstraint:
@@ -60,15 +60,43 @@ databaseChangeLog:
             onDelete: RESTRICT
 
         - addForeignKeyConstraint:
-              baseTableName: quiz_timer
-              baseColumnNames: quiz_id
-              referencedTableName: quizzes
-              referencedColumnNames: id
-              constraintName: fk_quiz_timer_quiz
+            baseTableName: quiz_timer
+            baseColumnNames: quiz_id
+            referencedTableName: quizzes
+            referencedColumnNames: id
+            constraintName: fk_quiz_timer_quiz
 
         - addForeignKeyConstraint:
-              baseTableName: quiz_timer
-              baseColumnNames: user_id
-              referencedTableName: users
-              referencedColumnNames: id
-              constraintName: fk_quiz_timer_user
+            baseTableName: quiz_timer
+            baseColumnNames: user_id
+            referencedTableName: users
+            referencedColumnNames: id
+            constraintName: fk_quiz_timer_user
+
+        - addForeignKeyConstraint:
+            baseTableName: user_answers
+            baseColumnNames: user_id
+            referencedTableName: users
+            referencedColumnNames: id
+            constraintName: fk_user_answers_user
+
+        - addForeignKeyConstraint:
+            baseTableName: user_answers
+            baseColumnNames: quiz_id
+            referencedTableName: quizzes
+            referencedColumnNames: id
+            constraintName: fk_user_answers_quiz
+
+        - addForeignKeyConstraint:
+            baseTableName: user_answers
+            baseColumnNames: question_id
+            referencedTableName: questions
+            referencedColumnNames: id
+            constraintName: fk_user_answers_question
+
+        - addForeignKeyConstraint:
+            baseTableName: user_answers
+            baseColumnNames: option_id
+            referencedTableName: options
+            referencedColumnNames: id
+            constraintName: fk_user_answers_option

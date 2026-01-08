@@ -9,5 +9,5 @@ import lombok.*;
 @Builder
 public class UserAnswerDto {
     private Integer questionId;
-    private String answer;
+    private Integer optionId;
 }

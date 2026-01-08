@@ -310,3 +310,16 @@ VALUES (1, 1, '2026-01-08 09:00:00', '2026-01-08 09:20:00'),
        (3, 10, '2026-01-08 11:45:00', '2026-01-08 12:15:00'),
        (4, 10, '2026-01-08 12:45:00', '2026-01-08 13:15:00'),
        (5, 10, '2026-01-08 13:45:00', '2026-01-08 14:15:00');
+
+INSERT INTO user_answers (user_id, quiz_id, question_id, option_id)
+SELECT u.id,
+       q.quiz_id,
+       q.id,
+       CASE
+           WHEN RANDOM() < 0.5 THEN
+               (SELECT o2.id FROM options o2 WHERE o2.question_id = q.id AND o2.is_correct = true LIMIT 1)
+        ELSE
+            (SELECT o3.id FROM options o3 WHERE o3.question_id = q.id AND o3.is_correct = false ORDER BY RANDOM() LIMIT 1)
+END
+FROM users u
+CROSS JOIN questions q;

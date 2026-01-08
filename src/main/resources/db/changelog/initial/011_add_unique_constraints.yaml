@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 010-add-unique-constraints
+      id: 011-add-unique-constraints
       author: admin
       changes:
         - addUniqueConstraint:
@@ -17,3 +17,8 @@ databaseChangeLog:
             tableName: quiz_timer
             columnNames: quiz_id, user_id
             constraintName: unique_quiz_user
+
+        - addUniqueConstraint:
+            tableName: user_answers
+            columnNames: user_id, question_id
+            constraintName: uq_user_question
