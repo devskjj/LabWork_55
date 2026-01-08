@@ -31,10 +31,10 @@ public class QuizServiceImpl implements QuizService {
     private final QuizLeaderboardDao quizLeaderboardDao;
     private final ViewQuizDetailedDao viewQuizDetailedDao;
     private final QuizResultDao quizResultDao;
-    private UserService userService;
-    private QuizDao quizDao;
-    private QuestionDao questionDao;
-    private OptionDao optionDao;
+    private final UserService userService;
+    private final QuizDao quizDao;
+    private final QuestionDao questionDao;
+    private final OptionDao optionDao;
 
     public Integer createQuizFull(CreateQuizDto dto, Authentication auth) {
         Integer quizId = createQuiz(dto, auth);

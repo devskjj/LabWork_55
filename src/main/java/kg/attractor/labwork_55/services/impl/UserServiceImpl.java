@@ -23,7 +23,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserStatisticsDao userStatisticsDao;
-    private UserDao userDao;
+    private final UserDao userDao;
 
     @Override
     public Integer registerUser(CreateUserDto dto) {
