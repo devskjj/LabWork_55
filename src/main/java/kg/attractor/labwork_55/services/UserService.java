@@ -7,7 +7,7 @@ import kg.attractor.labwork_55.models.User;
 import org.springframework.security.core.Authentication;
 
 public interface UserService {
-    Integer registerUser(@Valid CreateUserDto dto, Authentication auth);
+    Integer registerUser(@Valid CreateUserDto dto);
 
     UserStatisticsDto getStatistics(Integer userId, Authentication auth);
 

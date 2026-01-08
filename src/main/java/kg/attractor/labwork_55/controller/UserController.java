@@ -22,8 +22,8 @@ public class UserController {
     private final RatingService ratingService;
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerNewUser(@Valid @RequestBody CreateUserDto dto, Authentication auth) {
-        Integer userId = userService.registerUser(dto, auth);
+    public ResponseEntity<?> registerNewUser(@Valid @RequestBody CreateUserDto dto) {
+        Integer userId = userService.registerUser(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("result", "User with ID " + userId + " has been successfully created."));
     }
 

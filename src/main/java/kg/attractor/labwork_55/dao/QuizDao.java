@@ -28,9 +28,9 @@ public class QuizDao {
         this.parameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
     }
 
-    public boolean isAlreadyExists(Integer userId, String name) {
+    public boolean isAlreadyExists(Integer quizId, String name) {
         String sql = "SELECT COUNT(*) FROM quizzes WHERE creator_id = ? AND title = ?";
-        Integer count = jdbcTemplate.queryForObject(sql, Integer.class, userId, name);
+        Integer count = jdbcTemplate.queryForObject(sql, Integer.class, quizId, name);
         return count != null && count > 0;
     }
 
