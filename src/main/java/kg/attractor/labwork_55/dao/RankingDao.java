@@ -13,12 +13,12 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class RatingDao {
+public class RankingDao {
     private final JdbcTemplate jdbcTemplate;
     private final NamedParameterJdbcTemplate parameterJdbcTemplate;
 
     @Autowired
-    public RatingDao(DataSource dataSource) {
+    public RankingDao(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
         this.parameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
     }
@@ -31,9 +31,5 @@ public class RatingDao {
                 .email(rs.getString("email"))
                 .score(rs.getInt("score"))
                 .build());
-    }
-
-    public void submitQuizRating (MapSqlParameterSource params){
-
     }
 }

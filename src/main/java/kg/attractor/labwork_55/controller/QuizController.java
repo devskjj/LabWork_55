@@ -49,8 +49,8 @@ public class QuizController {
     }
 
     @PostMapping("/{quizId}/rate")
-    public ResponseEntity<?> rateQuiz(@PathVariable Integer quizId, @Valid @RequestBody QuizRatingDto rate, Authentication auth) {
-        quizService.submitQuizRating(quizId, auth);
+    public ResponseEntity<?> rateQuiz(@PathVariable Integer quizId, @Valid @RequestBody QuizRatingDto rating, Authentication auth) {
+        quizService.submitQuizRating(quizId, rating, auth);
         return ResponseEntity.status(HttpStatus.OK).body(Map.of("result", "Rating of the quiz with ID " + quizId + " has been successfully updated."));
     }
 

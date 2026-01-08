@@ -79,5 +79,9 @@ public class QuizDao {
         parameterJdbcTemplate.update(sql, params);
     }
 
+    public Integer submitQuizRating (MapSqlParameterSource params) {
+        String sql = "UPDATE quiz_results SET quiz_rate_by_user = :quizRateByUser WHERE user_id = :userId AND quiz_id = :quizId";
+        return parameterJdbcTemplate.update(sql, params);
+    }
 
 }

@@ -36,7 +36,7 @@ public interface QuizService {
 
     QuizResultsDto getQuizResults(Integer quizId, Authentication auth);
 
-    void submitQuizRating(Integer quizId, Authentication auth);
+    void submitQuizRating(Integer quizId, QuizRatingDto rating, Authentication auth);
 
     QuizLeaderboardDto getQuizLeaderBoard(Integer quizId);
 }

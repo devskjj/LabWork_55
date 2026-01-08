@@ -184,9 +184,6 @@ public class QuizServiceImpl implements QuizService {
         } catch (DataAccessException dae) {
             throw new FailedToCreateException("Failed to save quiz score.");
         }
-
-//        name: quiz_rate_by_user
-
     }
 
     @Override
@@ -200,12 +197,20 @@ public class QuizServiceImpl implements QuizService {
     }
 
     @Override
-    public void submitQuizRating(Integer quizId, Authentication auth) {
+    public void submitQuizRating(Integer quizId, QuizRatingDto rating, Authentication auth) {
         UserDetails userAuth = (UserDetails) auth.getPrincipal();
         String email = Objects.requireNonNull(userAuth).getUsername();
         User user = userService.getUserByEmail(email);
         Quiz quiz = getQuizById(quizId);
+        MapSqlParameterSource params = new MapSqlParameterSource()
+                .addValue("quizRateByUser", rating.getRate())
+                .addValue("userId", user.getId())
+                .addValue("quizId", quizId);
 
+        int updated = quizDao.submitQuizRating(params);
+        if (updated == 0) {
+            throw new FailedToCreateException("Quiz result not found. Cannot update rating.");
+        }
     }
 
     @Override

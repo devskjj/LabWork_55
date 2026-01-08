@@ -1,6 +1,6 @@
 package kg.attractor.labwork_55.services.impl;
 
-import kg.attractor.labwork_55.dao.RatingDao;
+import kg.attractor.labwork_55.dao.RankingDao;
 import kg.attractor.labwork_55.dto.RatingsDto;
 import kg.attractor.labwork_55.dto.UserRatingDto;
 import kg.attractor.labwork_55.services.RatingService;
@@ -14,12 +14,12 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class RatingServiceImpl implements RatingService {
-    private final RatingDao ratingDao;
+    private final RankingDao rankingDao;
 
     @Override
     public RatingsDto getRatings() {
         log.info("Get top 10 ratings");
-        List<UserRatingDto> topRatings = ratingDao.getTopTenRatings();
+        List<UserRatingDto> topRatings = rankingDao.getTopTenRatings();
 
         return RatingsDto.builder()
                 .ratings(topRatings)
