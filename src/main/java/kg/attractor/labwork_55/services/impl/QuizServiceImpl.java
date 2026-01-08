@@ -172,9 +172,21 @@ public class QuizServiceImpl implements QuizService {
             try {
                 quizDao.submitUserAnswers(params);
             } catch (DataAccessException dae) {
-                throw new FailedToCreateException("Failed to save user answers");
+                throw new FailedToCreateException("Failed to save user answers.");
             }
         }
+        MapSqlParameterSource params = new MapSqlParameterSource()
+                .addValue("userId", user.getId())
+                .addValue("quizId", quiz.getId())
+                .addValue("score", );
+        try {
+            quizResultDao.submitScore(params);
+        } catch (DataAccessException dae) {
+            throw new FailedToCreateException("Failed to save quiz score.");
+        }
+
+//        name: quiz_rate_by_user
+
     }
 
     @Override
@@ -193,6 +205,7 @@ public class QuizServiceImpl implements QuizService {
         String email = Objects.requireNonNull(userAuth).getUsername();
         User user = userService.getUserByEmail(email);
         Quiz quiz = getQuizById(quizId);
+
     }
 
     @Override

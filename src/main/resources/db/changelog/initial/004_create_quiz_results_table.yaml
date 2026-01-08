@@ -31,5 +31,3 @@ databaseChangeLog:
               - column:
                   name: quiz_rate_by_user
                   type: INT
-                  constraints:
-                    nullable: false
