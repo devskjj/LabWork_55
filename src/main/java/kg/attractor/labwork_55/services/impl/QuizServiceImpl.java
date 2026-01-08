@@ -1,9 +1,16 @@
 package kg.attractor.labwork_55.services.impl;
 
+import kg.attractor.labwork_55.dao.OptionDao;
 import kg.attractor.labwork_55.dao.QuestionDao;
 import kg.attractor.labwork_55.dao.QuizDao;
 import kg.attractor.labwork_55.dto.*;
 import kg.attractor.labwork_55.exceptions.FailedToCreateException;
+import kg.attractor.labwork_55.exceptions.OptionNotFoundException;
+import kg.attractor.labwork_55.exceptions.QuestionNotFoundException;
+import kg.attractor.labwork_55.exceptions.QuizNotFoundException;
+import kg.attractor.labwork_55.models.Option;
+import kg.attractor.labwork_55.models.Question;
+import kg.attractor.labwork_55.models.Quiz;
 import kg.attractor.labwork_55.models.User;
 import kg.attractor.labwork_55.services.QuizService;
 import kg.attractor.labwork_55.services.UserService;
@@ -25,6 +32,7 @@ public class QuizServiceImpl implements QuizService {
     private UserService userService;
     private QuizDao quizDao;
     private QuestionDao questionDao;
+    private OptionDao optionDao;
 
     @Override
     public Integer createQuiz(CreateQuizDto dto, Authentication auth) {
@@ -46,25 +54,23 @@ public class QuizServiceImpl implements QuizService {
     }
 
     @Override
-    public Integer createQuestion(Integer quizId, List<CreateQuestionDto> questions) {
+    public Integer createQuestion(Integer quizId, CreateQuestionDto question) {
         getQuizById(quizId);
-        if (questions.isEmpty()) {
+        if (question == null) {
             throw new FailedToCreateException("Question cannot be created for the quiz because there is no data.");
         }
-        for (CreateQuestionDto question : questions) {
-            MapSqlParameterSource params = new MapSqlParameterSource()
-                    .addValue("quizId", quizId)
-                    .addValue("questionText", question.getQuestionText());
-            try {
-                return questionDao.createQuestion(params);
-            } catch (NullPointerException npe) {
-                throw new FailedToCreateException("Failed to create a new question for the quiz: Id was not generated.");
-            }
+        MapSqlParameterSource params = new MapSqlParameterSource()
+                .addValue("quizId", quizId)
+                .addValue("questionText", question.getQuestionText());
+        try {
+           return questionDao.createQuestion(params);
+        } catch (NullPointerException npe) {
+            throw new FailedToCreateException("Failed to create a new question for the quiz: Id was not generated.");
         }
     }
 
     @Override
-    public void createOption(Integer questionId, List<CreateOptionDto> options) {
+    public void createOption(Integer questionId, CreateOptionDto option) {
 
     }
 
@@ -74,8 +80,26 @@ public class QuizServiceImpl implements QuizService {
     }
 
     @Override
-    public ViewQuizDetailedDto getQuizById(Integer quizId) {
+    public ViewQuizDetailedDto getQuizDetailedDtoById(Integer quizId) {
         return null;
+    }
+
+    @Override
+    public Quiz getQuizById(Integer quizId) {
+        return quizDao.getQuizById(quizId)
+                .orElseThrow(() -> new QuizNotFoundException("Quiz with id " + quizId + " not found."));
+    }
+
+    @Override
+    public Question getQuestionById(Integer questionId) {
+        return questionDao.getQuestionById(questionId)
+                .orElseThrow(() -> new QuestionNotFoundException("Question with id " + questionId + " not found."));
+    }
+
+    @Override
+    public Option getOptionById(Integer optionId) {
+        return optionDao.getOptionById(optionId)
+                .orElseThrow(() -> new OptionNotFoundException("Option with id " + optionId + " not found."));
     }
 
     @Override

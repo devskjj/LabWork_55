@@ -32,7 +32,7 @@ public class QuizController {
 
     @GetMapping("/{quizId}")
     public ResponseEntity<?> getQuizByIdDetailedInfo(@PathVariable Integer quizId) {
-        ViewQuizDetailedDto quiz = quizService.getQuizById(quizId);
+        ViewQuizDetailedDto quiz = quizService.getQuizDetailedDtoById(quizId);
         return ResponseEntity.status(HttpStatus.OK).body(quiz);
     }
 
