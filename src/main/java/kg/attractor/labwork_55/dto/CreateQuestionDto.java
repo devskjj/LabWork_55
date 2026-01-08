@@ -12,7 +12,6 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class CreateQuestionDto {
-    private Integer quizId;
     private String questionText;
     private List<CreateOptionDto> options;
 }

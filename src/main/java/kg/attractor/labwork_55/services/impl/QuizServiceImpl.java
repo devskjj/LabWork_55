@@ -34,6 +34,19 @@ public class QuizServiceImpl implements QuizService {
     private QuestionDao questionDao;
     private OptionDao optionDao;
 
+    public Integer createQuizFull(CreateQuizDto dto, Authentication auth) {
+        Integer quizId = createQuiz(dto, auth);
+        List<CreateQuestionDto> questions = dto.getQuestions();
+        for (CreateQuestionDto q : questions) {
+            Integer questionId = createQuestion(quizId, q);
+            List<CreateOptionDto> options = q.getOptions();
+            for (CreateOptionDto o : options) {
+                createOption(questionId, o);
+            }
+        }
+        return quizId;
+    }
+
     @Override
     public Integer createQuiz(CreateQuizDto dto, Authentication auth) {
         UserDetails userAuth = (UserDetails) auth.getPrincipal();
@@ -71,7 +84,19 @@ public class QuizServiceImpl implements QuizService {
 
     @Override
     public void createOption(Integer questionId, CreateOptionDto option) {
-
+        getQuestionById(questionId);
+        if (option == null) {
+            throw new FailedToCreateException("Option cannot be created for the question because there is no data.");
+        }
+        MapSqlParameterSource params = new MapSqlParameterSource()
+                .addValue("questionId", questionId)
+                .addValue("optionText", option.getOptionText())
+                .addValue("isCorrect", option.getIsCorrect());
+        try {
+            optionDao.createOption(params);
+        } catch (NullPointerException npe) {
+            throw new FailedToCreateException("Failed to create a new option for the question: Id was not generated.");
+        }
     }
 
     @Override

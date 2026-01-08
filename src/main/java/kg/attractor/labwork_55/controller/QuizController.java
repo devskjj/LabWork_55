@@ -20,7 +20,7 @@ public class QuizController {
 
     @PostMapping()
     public ResponseEntity<?> createNewQuiz(@Valid @RequestBody CreateQuizDto dto, Authentication auth) {
-        Integer quizId = quizService.createQuiz(dto, auth);
+        Integer quizId = quizService.createQuizFull(dto, auth);
         return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("result","Quiz with ID " + quizId + " has been successfully created."));
     }
 

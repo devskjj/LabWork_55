@@ -7,10 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
+import java.util.Objects;
 import java.util.Optional;
 
 @Component
@@ -34,5 +38,8 @@ public class OptionDao {
         }
     }
 
-
+    public void createOption(MapSqlParameterSource params) {
+        String sql = "INSERT INTO options (question_id, option_text, is_correct) VALUES(:questionId, :optionText, :isCorrect)";
+        parameterJdbcTemplate.update(sql, params);
+    }
 }

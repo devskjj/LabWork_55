@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class CreateOptionDto {
-    private Integer questionId;
     private String optionText;
     private Boolean isCorrect;
 }
