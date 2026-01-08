@@ -31,7 +31,7 @@ public interface QuizService {
 
     void submitQuizAnswers(PathVariable quizId, @Valid UserAnswerDto answers, Authentication auth);
 
-    QuizResultsDto getQuizResults(PathVariable quizId, Authentication auth);
+    QuizResultsDto getQuizResults(Integer quizId, Authentication auth);
 
     void submitQuizRating(PathVariable quizId, Authentication auth);
 

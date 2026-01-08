@@ -43,7 +43,7 @@ public class QuizController {
     }
 
     @GetMapping("/{quizId}/results")
-    public ResponseEntity<?> getResults(PathVariable quizId, Authentication auth) {
+    public ResponseEntity<?> getResults(@PathVariable Integer quizId, Authentication auth) {
         QuizResultsDto results = quizService.getQuizResults(quizId, auth);
         return ResponseEntity.status(HttpStatus.OK).body(results);
     }

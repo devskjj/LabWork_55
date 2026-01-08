@@ -30,6 +30,7 @@ import java.util.Objects;
 public class QuizServiceImpl implements QuizService {
     private final QuizLeaderboardDao quizLeaderboardDao;
     private final ViewQuizDetailedDao viewQuizDetailedDao;
+    private final QuizResultDao quizResultDao;
     private UserService userService;
     private QuizDao quizDao;
     private QuestionDao questionDao;
@@ -77,7 +78,7 @@ public class QuizServiceImpl implements QuizService {
                 .addValue("quizId", quizId)
                 .addValue("questionText", question.getQuestionText());
         try {
-           return questionDao.createQuestion(params);
+            return questionDao.createQuestion(params);
         } catch (NullPointerException npe) {
             throw new FailedToCreateException("Failed to create a new question for the quiz: Id was not generated.");
         }
@@ -110,12 +111,7 @@ public class QuizServiceImpl implements QuizService {
         if (!viewQuizDetailedDao.quizExists(quizId)) {
             throw new QuizNotFoundException("Quiz with id " + quizId + " not found");
         }
-
-        ViewQuizDetailedDto details = viewQuizDetailedDao.getQuizDetails(quizId);
-        return ViewQuizDetailedDto.builder()
-                .title(details.getTitle())
-                .questions(details.getQuestions())
-                .build();
+        return viewQuizDetailedDao.getQuizDetails(quizId);
     }
 
     @Override
@@ -142,8 +138,11 @@ public class QuizServiceImpl implements QuizService {
     }
 
     @Override
-    public QuizResultsDto getQuizResults(PathVariable quizId, Authentication auth) {
-        return null;
+    public QuizResultsDto getQuizResults(Integer quizId, Authentication auth) {
+        if (!quizResultDao.quizExists(quizId)) {
+            throw new QuizNotFoundException("Quiz with id " + quizId + " not found");
+        }
+        return quizResultDao.getQuizResults(quizId);
     }
 
     @Override
@@ -156,9 +155,7 @@ public class QuizServiceImpl implements QuizService {
         if (!quizLeaderboardDao.quizExists(quizId)) {
             throw new QuizNotFoundException("Quiz with id " + quizId + " not found");
         }
-
         LinkedHashMap<String, Integer> leaderboard = quizLeaderboardDao.getLeaderboard(quizId);
-
         return QuizLeaderboardDto.builder()
                 .leaderboard(leaderboard)
                 .build();
