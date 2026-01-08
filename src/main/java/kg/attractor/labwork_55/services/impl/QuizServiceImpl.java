@@ -103,7 +103,7 @@ public class QuizServiceImpl implements QuizService {
 
     @Override
     public List<ViewQuizGeneralDto> getAllQuizzes() {
-        return List.of();
+        return quizDao.getAllQuizzesGeneralInfo();
     }
 
     @Override

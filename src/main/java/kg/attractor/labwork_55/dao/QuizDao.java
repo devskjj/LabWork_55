@@ -1,5 +1,6 @@
 package kg.attractor.labwork_55.dao;
 
+import kg.attractor.labwork_55.dto.ViewQuizGeneralDto;
 import kg.attractor.labwork_55.models.Quiz;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -49,4 +51,18 @@ public class QuizDao {
             return Optional.empty();
         }
     }
+
+    public List<ViewQuizGeneralDto> getAllQuizzesGeneralInfo() {
+        String sql = """
+                SELECT
+                    qz.title,
+                    COUNT(q.id) AS question_count
+                FROM quizzes qz
+                JOIN questions q ON q.quiz_id = qz.id
+                GROUP BY qz.title
+                ORDER BY qz.title;
+                """;
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(ViewQuizGeneralDto.class));
+    }
+
 }
