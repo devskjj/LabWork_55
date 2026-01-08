@@ -2,6 +2,7 @@ package kg.attractor.labwork_55.errors;
 
 import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.validation.ValidationException;
+import kg.attractor.labwork_55.exceptions.FailedToCreateException;
 import kg.attractor.labwork_55.services.ErrorService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -44,6 +45,13 @@ public class GlobalControllerAdvice {
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public CustomErrorResponse handleException(Exception e) {
+        log.error("Ошибка запроса: ", e);
+        return errorService.makeErrorResponse(e);
+    }
+
+    @ExceptionHandler(FailedToCreateException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public CustomErrorResponse handlerFailedToCreateException(Exception e) {
         log.error("Ошибка запроса: ", e);
         return errorService.makeErrorResponse(e);
     }

@@ -1,7 +1,9 @@
 package kg.attractor.labwork_55.dao;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
@@ -10,6 +12,12 @@ import javax.sql.DataSource;
 @RequiredArgsConstructor
 public class QuestionDao {
     private final JdbcTemplate jdbcTemplate;
-    private final DataSource dataSource;
+    private final NamedParameterJdbcTemplate parameterJdbcTemplate;
+
+    @Autowired
+    public QuestionDao(DataSource dataSource) {
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
+        this.parameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+    }
 
 }
