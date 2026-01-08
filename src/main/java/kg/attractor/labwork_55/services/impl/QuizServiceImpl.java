@@ -1,5 +1,6 @@
 package kg.attractor.labwork_55.services.impl;
 
+import kg.attractor.labwork_55.dao.QuestionDao;
 import kg.attractor.labwork_55.dao.QuizDao;
 import kg.attractor.labwork_55.dto.*;
 import kg.attractor.labwork_55.exceptions.FailedToCreateException;
@@ -23,6 +24,7 @@ import java.util.Objects;
 public class QuizServiceImpl implements QuizService {
     private UserService userService;
     private QuizDao quizDao;
+    private QuestionDao questionDao;
 
     @Override
     public Integer createQuiz(CreateQuizDto dto, Authentication auth) {
@@ -39,13 +41,26 @@ public class QuizServiceImpl implements QuizService {
         try {
             return quizDao.createQuiz(params);
         } catch (NullPointerException npe) {
-            throw new FailedToCreateException("Failed to create a new resume: Id was not generated.");
+            throw new FailedToCreateException("Failed to create a new quiz: Id was not generated.");
         }
     }
 
     @Override
     public Integer createQuestion(Integer quizId, List<CreateQuestionDto> questions) {
-        return 0;
+        getQuizById(quizId);
+        if (questions.isEmpty()) {
+            throw new FailedToCreateException("Question cannot be created for the quiz because there is no data.");
+        }
+        for (CreateQuestionDto question : questions) {
+            MapSqlParameterSource params = new MapSqlParameterSource()
+                    .addValue("quizId", quizId)
+                    .addValue("questionText", question.getQuestionText());
+            try {
+                return questionDao.createQuestion(params);
+            } catch (NullPointerException npe) {
+                throw new FailedToCreateException("Failed to create a new question for the quiz: Id was not generated.");
+            }
+        }
     }
 
     @Override
