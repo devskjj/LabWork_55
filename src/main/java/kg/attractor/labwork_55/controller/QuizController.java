@@ -21,7 +21,7 @@ public class QuizController {
     @PostMapping()
     public ResponseEntity<?> createNewQuiz(@Valid @RequestBody CreateQuizDto dto, Authentication auth) {
         Integer quizId = quizService.createQuizFull(dto, auth);
-        return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("result","Quiz with ID " + quizId + " has been successfully created."));
+        return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("result", "Quiz with ID " + quizId + " has been successfully created."));
     }
 
     @GetMapping()
@@ -39,7 +39,7 @@ public class QuizController {
     @PostMapping("/{quizId}/solve")
     public ResponseEntity<?> submitAnswers(PathVariable quizId, @Valid @RequestBody UserAnswerDto answers, Authentication auth) {
         quizService.submitQuizAnswers(quizId, answers, auth);
-        return ResponseEntity.status(HttpStatus.OK).body(Map.of("result","Answers to the quiz with ID " + quizId + " has been successfully submitted."));
+        return ResponseEntity.status(HttpStatus.OK).body(Map.of("result", "Answers to the quiz with ID " + quizId + " has been successfully submitted."));
     }
 
     @GetMapping("/{quizId}/results")
@@ -51,7 +51,7 @@ public class QuizController {
     @PostMapping("/{quizId}/rate")
     public ResponseEntity<?> rateQuiz(PathVariable quizId, Authentication auth) {
         quizService.submitQuizRating(quizId, auth);
-        return ResponseEntity.status(HttpStatus.OK).body(Map.of("result","Rating of the quiz with ID " + quizId + " has been successfully updated."));
+        return ResponseEntity.status(HttpStatus.OK).body(Map.of("result", "Rating of the quiz with ID " + quizId + " has been successfully updated."));
     }
 
     @GetMapping("/{quizId}/leaderboard")

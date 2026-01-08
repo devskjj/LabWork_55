@@ -1,9 +1,6 @@
 package kg.attractor.labwork_55.services.impl;
 
-import kg.attractor.labwork_55.dao.QuizLeaderboardDao;
-import kg.attractor.labwork_55.dao.OptionDao;
-import kg.attractor.labwork_55.dao.QuestionDao;
-import kg.attractor.labwork_55.dao.QuizDao;
+import kg.attractor.labwork_55.dao.*;
 import kg.attractor.labwork_55.dto.*;
 import kg.attractor.labwork_55.exceptions.QuizNotFoundException;
 import kg.attractor.labwork_55.exceptions.FailedToCreateException;
@@ -32,6 +29,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class QuizServiceImpl implements QuizService {
     private final QuizLeaderboardDao quizLeaderboardDao;
+    private final ViewQuizDetailedDao viewQuizDetailedDao;
     private UserService userService;
     private QuizDao quizDao;
     private QuestionDao questionDao;
@@ -109,7 +107,15 @@ public class QuizServiceImpl implements QuizService {
 
     @Override
     public ViewQuizDetailedDto getQuizDetailedDtoById(Integer quizId) {
-        return null;
+        if (!viewQuizDetailedDao.quizExists(quizId)) {
+            throw new QuizNotFoundException("Quiz with id " + quizId + " not found");
+        }
+
+        ViewQuizDetailedDto details = viewQuizDetailedDao.getQuizDetails(quizId);
+        return ViewQuizDetailedDto.builder()
+                .title(details.getTitle())
+                .questions(details.getQuestions())
+                .build();
     }
 
     @Override
