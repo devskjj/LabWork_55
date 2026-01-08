@@ -59,7 +59,6 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
                                 .requestMatchers(HttpMethod.POST, "/api/register").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/api/ratings").permitAll()
                                 .requestMatchers("/api/**").fullyAuthenticated()
                                 .anyRequest().permitAll()
                         );

@@ -2,16 +2,16 @@ INSERT INTO roles (id, role)
 VALUES (1, 'USER');
 
 INSERT INTO users (id, username, password, email, enabled, role_id)
-VALUES (1, 'user1', 'password', 'user1@mail.com', true, 1),
-       (2, 'user2', 'password', 'user2@mail.com', true, 1),
-       (3, 'user3', 'password', 'user3@mail.com', true, 1),
-       (4, 'user4', 'password', 'user4@mail.com', true, 1),
-       (5, 'user5', 'password', 'user5@mail.com', true, 1),
-       (6, 'user6', 'password', 'user6@mail.com', true, 1),
-       (7, 'user7', 'password', 'user7@mail.com', true, 1),
-       (8, 'user8', 'password', 'user8@mail.com', true, 1),
-       (9, 'user9', 'password', 'user9@mail.com', true, 1),
-       (10, 'user10', 'password', 'user10@mail.com', true, 1);
+VALUES (1, 'user1', '$2a$12$gF2Cfa93BnZ/D2O8sMEwPOvrja2PT2clcqFKc/uve/Tm1ayy83vsu', 'user1@mail.com', true, 1),
+       (2, 'user2', '$2a$12$gF2Cfa93BnZ/D2O8sMEwPOvrja2PT2clcqFKc/uve/Tm1ayy83vsu', 'user2@mail.com', true, 1),
+       (3, 'user3', '$2a$12$gF2Cfa93BnZ/D2O8sMEwPOvrja2PT2clcqFKc/uve/Tm1ayy83vsu', 'user3@mail.com', true, 1),
+       (4, 'user4', '$2a$12$gF2Cfa93BnZ/D2O8sMEwPOvrja2PT2clcqFKc/uve/Tm1ayy83vsu', 'user4@mail.com', true, 1),
+       (5, 'user5', '$2a$12$gF2Cfa93BnZ/D2O8sMEwPOvrja2PT2clcqFKc/uve/Tm1ayy83vsu', 'user5@mail.com', true, 1),
+       (6, 'user6', '$2a$12$gF2Cfa93BnZ/D2O8sMEwPOvrja2PT2clcqFKc/uve/Tm1ayy83vsu', 'user6@mail.com', true, 1),
+       (7, 'user7', '$2a$12$gF2Cfa93BnZ/D2O8sMEwPOvrja2PT2clcqFKc/uve/Tm1ayy83vsu', 'user7@mail.com', true, 1),
+       (8, 'user8', '$2a$12$gF2Cfa93BnZ/D2O8sMEwPOvrja2PT2clcqFKc/uve/Tm1ayy83vsu', 'user8@mail.com', true, 1),
+       (9, 'user9', '$2a$12$gF2Cfa93BnZ/D2O8sMEwPOvrja2PT2clcqFKc/uve/Tm1ayy83vsu', 'user9@mail.com', true, 1),
+       (10, 'user10', '$2a$12$gF2Cfa93BnZ/D2O8sMEwPOvrja2PT2clcqFKc/uve/Tm1ayy83vsu', 'user10@mail.com', true, 1);
 
 INSERT INTO quizzes (id, title, description, creator_id)
 VALUES (1, 'Животные', 'Вопросы о животных', 1),
