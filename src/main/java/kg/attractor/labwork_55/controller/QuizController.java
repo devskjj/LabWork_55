@@ -1,0 +1,76 @@
+package kg.attractor.labwork_55.controller;
+
+import jakarta.validation.Valid;
+import kg.attractor.labwork_55.dto.*;
+import kg.attractor.labwork_55.services.QuizService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
+
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/api/quizzes")
+public class QuizController {
+    private final QuizService quizService;
+
+    @PostMapping()
+    public ResponseEntity<?> createNewQuiz(@Valid @RequestBody CreateQuizDto dto, Authentication auth) {
+        Integer quizId = quizService.createQuizFull(dto, auth);
+        return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("result", "Quiz with ID " + quizId + " has been successfully created."));
+    }
+
+    @GetMapping()
+    public ResponseEntity<?> getQuizListGeneralInfo() {
+        List<ViewQuizGeneralDto> quizzes = quizService.getAllQuizzes();
+        return ResponseEntity.status(HttpStatus.OK).body(quizzes);
+    }
+
+    @GetMapping("/{quizId}")
+    public ResponseEntity<ViewQuizDetailedDto> getQuizByIdDetailedInfo(@PathVariable Integer quizId,
+                                                                       @RequestParam(defaultValue = "1") int page,
+                                                                       @RequestParam(defaultValue = "5") int size,
+                                                                       Authentication auth) {
+        if (page < 1) page = 1;
+        if (size <= 0 || size > 50) size = 5;
+        int offsetPage = page - 1;
+        ViewQuizDetailedDto quiz = quizService.getQuizDetailedDtoById(quizId, offsetPage, size, auth);
+        quiz.setPage(page);
+        return ResponseEntity.status(HttpStatus.OK).body(quiz);
+    }
+
+    @PostMapping("/{quizId}/solve")
+    public ResponseEntity<?> submitAnswers(@PathVariable Integer quizId, @Valid @RequestBody List<@Valid UserAnswerDto> answers, Authentication auth) {
+        quizService.submitQuizAnswers(quizId, answers, auth);
+        return ResponseEntity.status(HttpStatus.OK).body(Map.of("result", "Answers to the quiz with ID " + quizId + " have been successfully submitted."));
+    }
+
+    @GetMapping("/{quizId}/results")
+    public ResponseEntity<?> getResults(@PathVariable Integer quizId, Authentication auth,
+                                        @RequestParam(defaultValue = "1") int page,
+                                        @RequestParam(defaultValue = "5") int size) {
+        if (page < 1) page = 1;
+        if (size <= 0 || size > 50) size = 5;
+        int offsetPage = page - 1;
+        QuizResultsDto results = quizService.getQuizResults(quizId, auth, offsetPage, size);
+        results.setPage(page);
+        results.setSize(size);
+        return ResponseEntity.status(HttpStatus.OK).body(results);
+    }
+
+    @PostMapping("/{quizId}/rate")
+    public ResponseEntity<?> rateQuiz(@PathVariable Integer quizId, @Valid @RequestBody QuizRatingDto rating, Authentication auth) {
+        quizService.submitQuizRating(quizId, rating, auth);
+        return ResponseEntity.status(HttpStatus.OK).body(Map.of("result", "Rating of the quiz with ID " + quizId + " has been successfully updated."));
+    }
+
+    @GetMapping("/{quizId}/leaderboard")
+    public ResponseEntity<?> getLeaderBoard(@PathVariable Integer quizId) {
+        QuizLeaderboardDto leaderboard = quizService.getQuizLeaderBoard(quizId);
+        return ResponseEntity.status(HttpStatus.OK).body(leaderboard);
+    }
+}

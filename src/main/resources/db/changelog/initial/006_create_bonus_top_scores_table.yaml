@@ -1,0 +1,23 @@
+databaseChangeLog:
+  - changeSet:
+      id: 006-create-bonus-top-scores-table
+      author: admin
+      changes:
+        - createTable:
+            tableName: top_scores
+            columns:
+              - column:
+                  name: id
+                  type: INT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: result_id
+                  type: INT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: score
+                  type: INT

@@ -1,0 +1,33 @@
+databaseChangeLog:
+  - changeSet:
+      id: 004-create-quiz-results-table
+      author: admin
+      changes:
+        - createTable:
+            tableName: quiz_results
+            columns:
+              - column:
+                  name: id
+                  type: INT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: INT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: quiz_id
+                  type: INT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: score
+                  type: INT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: quiz_rate_by_user
+                  type: INT

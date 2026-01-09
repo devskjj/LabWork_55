@@ -1,0 +1,29 @@
+databaseChangeLog:
+  - changeSet:
+      id: 011-add-unique-constraints
+      author: admin
+      changes:
+        - addUniqueConstraint:
+            tableName: users
+            columnNames: email
+            constraintName: unique_user_email
+
+        - addUniqueConstraint:
+            tableName: top_scores
+            columnNames: result_id
+            constraintName: unique_top_scores_result
+
+        - addUniqueConstraint:
+            tableName: quiz_timer
+            columnNames: quiz_id, user_id
+            constraintName: unique_quiz_user
+
+        - addUniqueConstraint:
+            tableName: user_answers
+            columnNames: user_id, question_id
+            constraintName: uq_user_question
+
+        - addUniqueConstraint:
+            tableName: quiz_results
+            columnNames: user_id, quiz_id
+            constraintName: uq_user_quiz_result
