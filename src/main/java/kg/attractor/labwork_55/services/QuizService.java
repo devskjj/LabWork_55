@@ -20,7 +20,7 @@ public interface QuizService {
 
     List<ViewQuizGeneralDto> getAllQuizzes();
 
-    ViewQuizDetailedDto getQuizDetailedDtoById(Integer quizId);
+    ViewQuizDetailedDto getQuizDetailedDtoById(Integer quizId, int page, int size);
 
     Quiz getQuizById(Integer quizId);
 
@@ -34,7 +34,7 @@ public interface QuizService {
 
     void submitQuizAnswers(Integer quizId, List<UserAnswerDto> answers, Authentication auth);
 
-    QuizResultsDto getQuizResults(Integer quizId, Authentication auth);
+    QuizResultsDto getQuizResults(Integer quizId, Authentication auth, int page, int size);
 
     void submitQuizRating(Integer quizId, QuizRatingDto rating, Authentication auth);
 

@@ -17,4 +17,6 @@ public class ViewQuizDetailedDto {
     @Size(max = 50, message = "Text length cannot be more than 50")
     private String title;
     private List<QuizQuestionDto> questions;
+    private int page;
+    private int size;
 }

@@ -27,7 +27,8 @@ public class QuizResultDao {
         this.parameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
     }
 
-    public QuizResultsDto getQuizResults(Integer quizId, User user) {
+    public QuizResultsDto getQuizResults(Integer quizId, User user, int page, int size) {
+        int offset = page * size;
         Integer score;
         String scoreSql = "SELECT score FROM quiz_results WHERE quiz_id = ? AND user_id = ?";
 
@@ -45,19 +46,26 @@ public class QuizResultDao {
 
         String result = score + "/" + totalQuestions;
         return QuizResultsDto.builder()
-                .correctAnswers(getCorrectUserAnswers(quizId, user.getEmail()))
+                .correctAnswers(getCorrectUserAnswers(quizId, user.getEmail(), offset, size))
                 .result(result)
                 .build();
     }
 
-    public List<QuizCorrectAnswerDto> getCorrectUserAnswers(Integer quizId, String email) {
+    public List<QuizCorrectAnswerDto> getCorrectUserAnswers(Integer quizId, String email, int offset, int size) {
         String sql = """
-                    SELECT q.id AS question_id, o.id AS option_id, o.option_text
-                    FROM user_answers ua
-                    JOIN options o ON ua.option_id = o.id
-                    JOIN questions q ON o.question_id = q.id
-                    WHERE ua.user_id = (SELECT id FROM users WHERE email = ?)
-                      AND q.quiz_id = ? AND o.is_correct = true
+                SELECT
+                q.id AS question_id,
+                q.question_text,
+                o.id AS option_id,
+                o.option_text
+                FROM user_answers ua
+                JOIN options o ON ua.option_id = o.id
+                JOIN questions q ON o.question_id = q.id
+                WHERE ua.user_id = (SELECT id FROM users WHERE email = ?)
+                AND q.quiz_id = ?
+                AND o.is_correct = true
+                ORDER BY q.id
+                LIMIT ? OFFSET ?;
                 """;
 
         return jdbcTemplate.query(sql, (rs, rowNum) ->
@@ -66,7 +74,7 @@ public class QuizResultDao {
                                 .optionId(rs.getInt("option_id"))
                                 .answer(rs.getString("option_text"))
                                 .build(),
-                email, quizId
+                email, quizId, size, offset
         );
     }
 

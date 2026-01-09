@@ -128,13 +128,13 @@ public class QuizServiceImpl implements QuizService {
     }
 
     @Override
-    public ViewQuizDetailedDto getQuizDetailedDtoById(Integer quizId) {
+    public ViewQuizDetailedDto getQuizDetailedDtoById(Integer quizId, int page, int size) {
         if (!viewQuizDetailedDao.quizExists(quizId)) {
             log.warn("Quiz with id {} does not exist", quizId);
             throw new QuizNotFoundException("Quiz with id " + quizId + " not found");
         }
         log.info("Quiz with id {} found", quizId);
-        return viewQuizDetailedDao.getQuizDetails(quizId);
+        return viewQuizDetailedDao.getQuizDetails(quizId, page, size);
     }
 
     @Override
@@ -228,7 +228,7 @@ public class QuizServiceImpl implements QuizService {
     }
 
     @Override
-    public QuizResultsDto getQuizResults(Integer quizId, Authentication auth) {
+    public QuizResultsDto getQuizResults(Integer quizId, Authentication auth, int page, int size) {
         if (!quizResultDao.quizExists(quizId)) {
             log.warn("No quiz exists for quizId={}", quizId);
             throw new QuizNotFoundException("Quiz with id " + quizId + " not found");
@@ -238,7 +238,7 @@ public class QuizServiceImpl implements QuizService {
 
         log.info("Getting quiz results for quizId={}", quizId);
         User user = userService.getUserByEmail(email);
-        return quizResultDao.getQuizResults(quizId, user);
+        return quizResultDao.getQuizResults(quizId, user, page, size);
     }
 
     @Override

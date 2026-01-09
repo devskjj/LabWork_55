@@ -17,4 +17,6 @@ public class QuizResultsDto {
     @NotBlank(message = "Must not be null")
     @PositiveOrZero(message = "Must be positive or zero")
     private String result;
+    private int page;
+    private int size;
 }
