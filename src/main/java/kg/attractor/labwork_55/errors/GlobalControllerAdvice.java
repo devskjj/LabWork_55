@@ -6,6 +6,7 @@ import kg.attractor.labwork_55.exceptions.FailedToCreateException;
 import kg.attractor.labwork_55.services.ErrorService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -52,6 +53,13 @@ public class GlobalControllerAdvice {
     @ExceptionHandler(FailedToCreateException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public CustomErrorResponse handlerFailedToCreateException(Exception e) {
+        log.error("Ошибка запроса: ", e);
+        return errorService.makeErrorResponse(e);
+    }
+
+    @ExceptionHandler(DataAccessException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public CustomErrorResponse handlerDataAccessException(Exception e) {
         log.error("Ошибка запроса: ", e);
         return errorService.makeErrorResponse(e);
     }

@@ -55,49 +55,69 @@ public class QuizServiceImpl implements QuizService {
         UserDetails userAuth = (UserDetails) auth.getPrincipal();
         String email = Objects.requireNonNull(userAuth).getUsername();
         User user = userService.getUserByEmail(email);
+        log.info("User '{}' (id={}) is attempting to create a quiz with title='{}'", email, user.getId(), dto.getTitle());
         if (quizDao.isAlreadyExists(user.getId(), dto.getTitle())) {
+            log.warn("Quiz creation failed: quiz with title='{}' already exists for userId={}", dto.getTitle(), user.getId());
             throw new FailedToCreateException("Such quiz name already exists for the same creator.");
         }
         MapSqlParameterSource params = new MapSqlParameterSource()
                 .addValue("creatorId", user.getId())
                 .addValue("title", dto.getTitle())
                 .addValue("description", dto.getDescription());
+        log.debug("Creating quiz with params: {}", params.getValues());
         try {
-            return quizDao.createQuiz(params);
-        } catch (NullPointerException npe) {
+            Integer quizId =  quizDao.createQuiz(params);
+            log.info("Quiz successfully created with id={} by userId={}", quizId, user.getId());
+            return quizId;
+        } catch (DataAccessException dae) {
+            log.error("Database error while creating quiz for userId={}, params={}", user.getId(), params.getValues(), dae);
             throw new FailedToCreateException("Failed to create a new quiz: Id was not generated.");
         }
     }
 
     @Override
     public Integer createQuestion(Integer quizId, CreateQuestionDto question) {
+        log.info("Attempting to create question for quizId={}", quizId);
         getQuizById(quizId);
+        log.debug("Quiz with id={} exists", quizId);
         if (question == null) {
+            log.warn("Failed to create question: request body is null for quizId={}", quizId);
             throw new FailedToCreateException("Question cannot be created for the quiz because there is no data.");
         }
+        log.info("Creating question for quizId={} with text='{}'", quizId, question.getQuestionText());
         MapSqlParameterSource params = new MapSqlParameterSource()
                 .addValue("quizId", quizId)
                 .addValue("questionText", question.getQuestionText());
+        log.debug("Create question SQL params: {}", params.getValues());
         try {
-            return questionDao.createQuestion(params);
-        } catch (NullPointerException npe) {
+            Integer questionId = questionDao.createQuestion(params);
+            log.info("Question successfully created with id={} for quizId={}", questionId, quizId);
+            return questionId;
+        } catch (DataAccessException dae) {
+            log.error("Database error while creating question for quizId={}, params={}", quizId, params.getValues(), dae);
             throw new FailedToCreateException("Failed to create a new question for the quiz: Id was not generated.");
         }
     }
 
     @Override
     public void createOption(Integer questionId, CreateOptionDto option) {
+        log.info("Attempting to create option for questionId={}", questionId);
         getQuestionById(questionId);
+        log.debug("Question with id={} exists", questionId);
         if (option == null) {
+            log.warn("Failed to create option: request body is null for questionId={}", questionId);
             throw new FailedToCreateException("Option cannot be created for the question because there is no data.");
         }
         MapSqlParameterSource params = new MapSqlParameterSource()
                 .addValue("questionId", questionId)
                 .addValue("optionText", option.getOptionText())
                 .addValue("isCorrect", option.getIsCorrect());
+        log.debug("Create option SQL params: {}", params.getValues());
         try {
             optionDao.createOption(params);
-        } catch (NullPointerException npe) {
+            log.info("Option successfully created questionId={}", questionId);
+        } catch (DataAccessException dae) {
+            log.error("Database error while creating option for questionId={}, params={}", questionId, params.getValues(), dae);
             throw new FailedToCreateException("Failed to create a new option for the question: Id was not generated.");
         }
     }
