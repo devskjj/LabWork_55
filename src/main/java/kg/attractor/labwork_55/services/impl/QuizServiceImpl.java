@@ -238,7 +238,11 @@ public class QuizServiceImpl implements QuizService {
 
         log.info("Getting quiz results for quizId={}", quizId);
         User user = userService.getUserByEmail(email);
-        return quizResultDao.getQuizResults(quizId, user, page, size);
+        int offset = page * size;
+        return QuizResultsDto.builder()
+                .correctAnswers(quizResultDao.getCorrectUserAnswers(quizId, user.getEmail(), offset, size))
+                .result(quizResultDao.getQuizResults(quizId, user))
+                .build();
     }
 
     @Override

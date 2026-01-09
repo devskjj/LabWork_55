@@ -27,8 +27,7 @@ public class QuizResultDao {
         this.parameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
     }
 
-    public QuizResultsDto getQuizResults(Integer quizId, User user, int page, int size) {
-        int offset = page * size;
+    public String getQuizResults(Integer quizId, User user) {
         Integer score;
         String scoreSql = "SELECT score FROM quiz_results WHERE quiz_id = ? AND user_id = ?";
 
@@ -44,11 +43,7 @@ public class QuizResultDao {
                 quizId
         );
 
-        String result = score + "/" + totalQuestions;
-        return QuizResultsDto.builder()
-                .correctAnswers(getCorrectUserAnswers(quizId, user.getEmail(), offset, size))
-                .result(result)
-                .build();
+        return score + "/" + totalQuestions;
     }
 
     public List<QuizCorrectAnswerDto> getCorrectUserAnswers(Integer quizId, String email, int offset, int size) {
