@@ -20,6 +20,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -36,6 +37,7 @@ public class QuizServiceImpl implements QuizService {
     private final QuizDao quizDao;
     private final QuestionDao questionDao;
     private final OptionDao optionDao;
+    private final QuizTimerDao timerDao;
 
     public Integer createQuizFull(CreateQuizDto dto, Authentication auth) {
         Integer quizId = createQuiz(dto, auth);
@@ -66,7 +68,7 @@ public class QuizServiceImpl implements QuizService {
                 .addValue("description", dto.getDescription());
         log.debug("Creating quiz with params: {}", params.getValues());
         try {
-            Integer quizId =  quizDao.createQuiz(params);
+            Integer quizId = quizDao.createQuiz(params);
             log.info("Quiz successfully created with id={} by userId={}", quizId, user.getId());
             return quizId;
         } catch (DataAccessException dae) {
@@ -128,12 +130,14 @@ public class QuizServiceImpl implements QuizService {
     }
 
     @Override
-    public ViewQuizDetailedDto getQuizDetailedDtoById(Integer quizId, int page, int size) {
+    public ViewQuizDetailedDto getQuizDetailedDtoById(Integer quizId, int page, int size, Authentication auth) {
+        String email = auth.getName();
         if (!viewQuizDetailedDao.quizExists(quizId)) {
             log.warn("Quiz with id {} does not exist", quizId);
             throw new QuizNotFoundException("Quiz with id " + quizId + " not found");
         }
         log.info("Quiz with id {} found", quizId);
+        timerDao.startTimer(quizId, email);
         return viewQuizDetailedDao.getQuizDetails(quizId, page, size);
     }
 
@@ -205,6 +209,7 @@ public class QuizServiceImpl implements QuizService {
                     .addValue("answeredAt", now);
             log.info("Inserting answer: {}", params.getValues());
             try {
+                checkQuizTimerLimit(quizId, email);
                 quizDao.submitUserAnswers(params);
                 log.info("Successfully inserted answer for questionId={}", uad.getQuestionId());
             } catch (DataAccessException dae) {
@@ -224,6 +229,15 @@ public class QuizServiceImpl implements QuizService {
         } catch (DataAccessException dae) {
             log.error("Failed to save quiz score for userId={}, quizId={}, params={}", user.getId(), quiz.getId(), params.getValues(), dae);
             throw new FailedToCreateException("Failed to save quiz score because user already scored that quiz.");
+        }
+    }
+
+    private void checkQuizTimerLimit(Integer quizId, String email) {
+        LocalDateTime startedAt = timerDao.endQuizTime(quizId, email);
+        Duration duration = Duration.between(startedAt, LocalDateTime.now());
+        int allowedMinutes = 1;
+        if (duration.toMinutes() > allowedMinutes) {
+            throw new FailedToCreateException("Time for this quiz has expired!");
         }
     }
 

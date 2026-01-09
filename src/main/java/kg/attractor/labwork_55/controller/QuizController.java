@@ -33,11 +33,12 @@ public class QuizController {
     @GetMapping("/{quizId}")
     public ResponseEntity<ViewQuizDetailedDto> getQuizByIdDetailedInfo(@PathVariable Integer quizId,
                                                                        @RequestParam(defaultValue = "1") int page,
-                                                                       @RequestParam(defaultValue = "5") int size) {
+                                                                       @RequestParam(defaultValue = "5") int size,
+                                                                       Authentication auth) {
         if (page < 1) page = 1;
         if (size <= 0 || size > 50) size = 5;
         int offsetPage = page - 1;
-        ViewQuizDetailedDto quiz = quizService.getQuizDetailedDtoById(quizId, offsetPage, size);
+        ViewQuizDetailedDto quiz = quizService.getQuizDetailedDtoById(quizId, offsetPage, size, auth);
         quiz.setPage(page);
         return ResponseEntity.status(HttpStatus.OK).body(quiz);
     }

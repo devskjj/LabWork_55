@@ -20,7 +20,7 @@ public interface QuizService {
 
     List<ViewQuizGeneralDto> getAllQuizzes();
 
-    ViewQuizDetailedDto getQuizDetailedDtoById(Integer quizId, int page, int size);
+    ViewQuizDetailedDto getQuizDetailedDtoById(Integer quizId, int page, int size, Authentication auth);
 
     Quiz getQuizById(Integer quizId);
 
