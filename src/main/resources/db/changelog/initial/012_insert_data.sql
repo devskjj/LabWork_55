@@ -251,9 +251,14 @@ VALUES (1, 5, 3, 3),
 
 
 INSERT INTO top_scores (result_id, score)
-SELECT id, score
-FROM quiz_results
-ORDER BY score DESC LIMIT 10;
+SELECT qr.id, total_score
+FROM (
+         SELECT user_id, SUM(score) AS total_score, MAX(id) AS id
+         FROM quiz_results
+         GROUP BY user_id
+         ORDER BY total_score DESC
+             LIMIT 10
+     ) qr;
 
 INSERT INTO quiz_timer (quiz_id, user_id, started_at, ended_at)
 VALUES (1, 1, '2026-01-08 09:00:00', '2026-01-08 09:20:00'),
