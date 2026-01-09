@@ -31,8 +31,14 @@ public class QuizController {
     }
 
     @GetMapping("/{quizId}")
-    public ResponseEntity<?> getQuizByIdDetailedInfo(@PathVariable Integer quizId) {
-        ViewQuizDetailedDto quiz = quizService.getQuizDetailedDtoById(quizId);
+    public ResponseEntity<ViewQuizDetailedDto> getQuizByIdDetailedInfo(@PathVariable Integer quizId,
+                                                                       @RequestParam(defaultValue = "1") int page,
+                                                                       @RequestParam(defaultValue = "5") int size) {
+        if (page < 1) page = 1;
+        if (size <= 0 || size > 50) size = 5;
+        int offsetPage = page - 1;
+        ViewQuizDetailedDto quiz = quizService.getQuizDetailedDtoById(quizId, offsetPage, size);
+        quiz.setPage(page);
         return ResponseEntity.status(HttpStatus.OK).body(quiz);
     }
 
@@ -43,8 +49,15 @@ public class QuizController {
     }
 
     @GetMapping("/{quizId}/results")
-    public ResponseEntity<?> getResults(@PathVariable Integer quizId, Authentication auth) {
-        QuizResultsDto results = quizService.getQuizResults(quizId, auth);
+    public ResponseEntity<?> getResults(@PathVariable Integer quizId, Authentication auth,
+                                        @RequestParam(defaultValue = "1") int page,
+                                        @RequestParam(defaultValue = "5") int size) {
+        if (page < 1) page = 1;
+        if (size <= 0 || size > 50) size = 5;
+        int offsetPage = page - 1;
+        QuizResultsDto results = quizService.getQuizResults(quizId, auth, offsetPage, size);
+        results.setPage(page);
+        results.setSize(size);
         return ResponseEntity.status(HttpStatus.OK).body(results);
     }
 
