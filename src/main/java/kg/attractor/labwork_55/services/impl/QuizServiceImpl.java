@@ -110,8 +110,10 @@ public class QuizServiceImpl implements QuizService {
     @Override
     public ViewQuizDetailedDto getQuizDetailedDtoById(Integer quizId) {
         if (!viewQuizDetailedDao.quizExists(quizId)) {
+            log.warn("Quiz with id {} does not exist", quizId);
             throw new QuizNotFoundException("Quiz with id " + quizId + " not found");
         }
+        log.info("Quiz with id {} found", quizId);
         return viewQuizDetailedDao.getQuizDetails(quizId);
     }
 
@@ -128,14 +130,14 @@ public class QuizServiceImpl implements QuizService {
     }
 
     @Override
-    public Question getQuestionByOption (Integer optionId) {
-        Integer questionId =  questionDao.getQuestionByOption(optionId)
+    public Question getQuestionByOption(Integer optionId) {
+        Integer questionId = questionDao.getQuestionByOption(optionId)
                 .orElseThrow(() -> new QuestionNotFoundException("Question for option id " + optionId + " not found."));
         return getQuestionById(questionId);
     }
 
     @Override
-    public Quiz getQuizByQuestion (Integer questionId) {
+    public Quiz getQuizByQuestion(Integer questionId) {
         Integer quizId = quizDao.getQuizByQuestion(questionId)
                 .orElseThrow(() -> new QuestionNotFoundException("Quiz for question id " + questionId + " not found."));
         return getQuizById(quizId);
@@ -208,10 +210,13 @@ public class QuizServiceImpl implements QuizService {
     @Override
     public QuizResultsDto getQuizResults(Integer quizId, Authentication auth) {
         if (!quizResultDao.quizExists(quizId)) {
+            log.warn("No quiz exists for quizId={}", quizId);
             throw new QuizNotFoundException("Quiz with id " + quizId + " not found");
         }
         UserDetails userAuth = (UserDetails) auth.getPrincipal();
         String email = Objects.requireNonNull(userAuth).getUsername();
+
+        log.info("Getting quiz results for quizId={}", quizId);
         User user = userService.getUserByEmail(email);
         return quizResultDao.getQuizResults(quizId, user);
     }
@@ -241,9 +246,11 @@ public class QuizServiceImpl implements QuizService {
     @Override
     public QuizLeaderboardDto getQuizLeaderBoard(Integer quizId) {
         if (!quizLeaderboardDao.quizExists(quizId)) {
+            log.warn("Quiz with id '{}' not found", quizId);
             throw new QuizNotFoundException("Quiz with id " + quizId + " not found");
         }
         LinkedHashMap<String, Integer> leaderboard = quizLeaderboardDao.getLeaderboard(quizId);
+        log.info("Fetched leaderboard: {}", leaderboard);
         return QuizLeaderboardDto.builder()
                 .leaderboard(leaderboard)
                 .build();
